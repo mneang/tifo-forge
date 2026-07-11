@@ -24,3 +24,91 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@keyframes tifo-seat-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.72);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.04);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes tifo-symbol-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.72);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translateY(-3px) scale(1.04);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes tifo-banner-reveal {
+  from {
+    opacity: 0;
+    transform: scaleX(0.35);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes tifo-slogan-reveal {
+  from {
+    opacity: 0;
+    letter-spacing: 18px;
+  }
+
+  to {
+    opacity: 1;
+    letter-spacing: 4px;
+  }
+}
+
+.tifo-seat {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: tifo-seat-rise 560ms cubic-bezier(0.22, 1, 0.36, 1)
+    forwards;
+  animation-delay: var(--seat-delay);
+}
+
+.tifo-symbol {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: tifo-symbol-reveal 760ms cubic-bezier(0.22, 1, 0.36, 1)
+    900ms forwards;
+}
+
+.tifo-banner {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: tifo-banner-reveal 650ms cubic-bezier(0.22, 1, 0.36, 1)
+    1180ms forwards;
+}
+
+.tifo-slogan {
+  opacity: 0;
+  animation: tifo-slogan-reveal 650ms ease-out 1500ms forwards;
+}
