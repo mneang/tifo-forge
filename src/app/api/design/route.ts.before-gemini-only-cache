@@ -404,6 +404,8 @@ export async function POST(request: Request) {
       warning: "Gemini API key is unavailable.",
     };
 
+    setCachedDesign(cacheKey, response);
+
     return NextResponse.json(response);
   }
 
@@ -506,6 +508,8 @@ export async function POST(request: Request) {
       "The live Gemini request reached its temporary quota, so the resilient local plan was used.",
     attempts: maximumAttempts,
   };
+
+  setCachedDesign(cacheKey, fallbackResponse);
 
   return NextResponse.json(fallbackResponse);
 }

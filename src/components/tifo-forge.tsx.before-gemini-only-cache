@@ -1740,27 +1740,19 @@ export default function TifoForge() {
         const cachedResult =
           JSON.parse(cachedText) as DesignResponse;
 
-        if (
-          cachedResult.ok &&
-          cachedResult.design &&
-          cachedResult.source === "gemini"
-        ) {
+        if (cachedResult.ok && cachedResult.design) {
           setDesign(cachedResult.design);
-          setSource("gemini");
+          setSource(cachedResult.source);
           setGenerationId(
             (current) => current + 1,
           );
 
           setStatusMessage(
-            "Your Gemini creative plan has been raised instantly.",
+            "Your saved creative plan has been raised instantly.",
           );
 
           return;
         }
-
-        window.localStorage.removeItem(
-          browserCacheKey,
-        );
       }
       const response = await fetch("/api/design", {
         method: "POST",
@@ -1784,12 +1776,10 @@ export default function TifoForge() {
       setSource(result.source);
       setGenerationId((current) => current + 1);
 
-      if (result.source === "gemini") {
-        window.localStorage.setItem(
-          browserCacheKey,
-          JSON.stringify(result),
-        );
-      }
+      window.localStorage.setItem(
+        browserCacheKey,
+        JSON.stringify(result),
+      );
 
       setStatusMessage(
         result.source === "gemini"
