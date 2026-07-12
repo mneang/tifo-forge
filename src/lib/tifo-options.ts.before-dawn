@@ -91,7 +91,7 @@ export const teams: Record<TeamId, TeamOption> = {
       accent: "#BC002D",
     },
     passionLine: "Discipline carries belief forward.",
-    identityLine: "Samurai blue, pure white, and a bold red center.",
+    identityLine: "Samurai blue, pure white, and rising red.",
     recommendedSymbols: ["rising-sun", "heart"],
   },
 
@@ -202,8 +202,8 @@ export const symbols: Record<
   },
 
   "rising-sun": {
-    label: "Dawn",
-    description: "A new beginning, renewed hope, and light returning.",
+    label: "Rising Sun",
+    description: "Hope, renewal, and a new beginning.",
   },
 
   wings: {

@@ -1,0 +1,1276 @@
+.page {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(
+      circle at 50% -20%,
+      #1e3a8a 0%,
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      #07111f 0%,
+      #020617 70%
+    );
+  color: white;
+}
+
+.appShell {
+  width: min(1500px, 100%);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 20px 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.header h1 {
+  margin: 2px 0 0;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 0.95;
+  font-weight: 950;
+  letter-spacing: -0.06em;
+}
+
+.header h1 span {
+  color: #fdba74;
+}
+
+.header p {
+  max-width: 440px;
+  margin: 0;
+  color: #94a3b8;
+  text-align: right;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.eyebrow,
+.sectionLabel,
+.resultBar span {
+  color: #fdba74;
+  font-size: 0.69rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.workspace {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  gap: 22px;
+  align-items: center;
+}
+
+.controls {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 26px;
+  background: rgba(15, 23, 42, 0.7);
+  padding: 20px;
+  display: grid;
+  gap: 18px;
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px);
+}
+
+.controls section {
+  display: grid;
+  gap: 10px;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
+}
+
+.teamButton,
+.teamActive,
+.choiceButton,
+.choiceActive,
+.symbolButton,
+.symbolActive {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(2, 6, 23, 0.66);
+  color: #cbd5e1;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.teamButton:hover,
+.choiceButton:hover,
+.symbolButton:hover {
+  transform: translateY(-2px);
+  border-color: rgba(253, 186, 116, 0.46);
+}
+
+.teamActive,
+.choiceActive,
+.symbolActive {
+  border-color: #fdba74;
+  background: rgba(253, 186, 116, 0.14);
+  color: #fed7aa;
+  box-shadow:
+    inset 0 0 0 1px rgba(253, 186, 116, 0.08),
+    0 8px 20px rgba(194, 65, 12, 0.08);
+}
+
+.teamButton,
+.teamActive {
+  min-height: 55px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  gap: 1px;
+}
+
+.teamButton span,
+.teamActive span {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.teamButton strong,
+.teamActive strong {
+  font-size: 0.67rem;
+  letter-spacing: 0.08em;
+}
+
+.passionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+.choiceButton,
+.choiceActive {
+  min-height: 38px;
+  border-radius: 11px;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.symbolGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 7px;
+}
+
+.symbolButton,
+.symbolActive {
+  aspect-ratio: 1;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+}
+
+.symbolButton svg,
+.symbolActive svg {
+  width: 24px;
+  height: 24px;
+}
+
+.raiseButton,
+.surpriseButton,
+.secondaryAction {
+  cursor: pointer;
+  transition:
+    transform 170ms ease,
+    background 170ms ease,
+    border-color 170ms ease,
+    color 170ms ease;
+}
+
+.raiseButton {
+  min-height: 50px;
+  border: 0;
+  border-radius: 14px;
+  background: #fdba74;
+  color: #08101f;
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: 0 12px 34px rgba(194, 65, 12, 0.26);
+}
+
+.raiseButton:hover {
+  transform: translateY(-2px);
+  background: #fed7aa;
+}
+
+.surpriseButton {
+  min-height: 42px;
+  margin-top: -10px;
+  border: 1px solid rgba(253, 186, 116, 0.25);
+  border-radius: 13px;
+  background: rgba(253, 186, 116, 0.07);
+  color: #fed7aa;
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.surpriseButton:hover {
+  transform: translateY(-2px);
+  border-color: rgba(253, 186, 116, 0.55);
+  background: rgba(253, 186, 116, 0.12);
+}
+
+.raiseButton:disabled,
+.surpriseButton:disabled,
+.secondaryAction:disabled {
+  cursor: wait;
+  opacity: 0.6;
+  transform: none;
+}
+
+.statusMessage {
+  min-height: 18px;
+  margin: -6px 0 0;
+  color: #64748b;
+  font-size: 0.68rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.previewColumn {
+  min-width: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.stadiumShell {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 28px;
+  background: #020617;
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.42);
+}
+
+.stadium {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.loadingOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  background: rgba(2, 6, 23, 0.58);
+  backdrop-filter: blur(7px);
+}
+
+.loadingPill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(253, 186, 116, 0.32);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.94);
+  padding: 12px 17px;
+  color: #fed7aa;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.loadingPill span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fdba74;
+  box-shadow: 0 0 18px #fdba74;
+}
+
+.actionRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.secondaryAction {
+  min-height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.72);
+  color: #cbd5e1;
+  font-size: 0.7rem;
+  font-weight: 850;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.secondaryAction:hover {
+  transform: translateY(-2px);
+  border-color: rgba(253, 186, 116, 0.38);
+  color: #fed7aa;
+}
+
+.resultBar {
+  min-height: 76px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 20px;
+  background: rgba(15, 23, 42, 0.7);
+  padding: 13px 18px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 22px;
+}
+
+.resultBar p {
+  margin: 5px 0 0;
+  color: #cbd5e1;
+  font-size: 0.83rem;
+  line-height: 1.45;
+}
+
+.resultMeta {
+  min-width: 125px;
+  text-align: right;
+  display: grid;
+  justify-items: end;
+}
+
+.resultMeta strong {
+  margin-top: 2px;
+  font-size: 1.25rem;
+}
+
+.resultMeta small {
+  color: #64748b;
+  font-size: 0.66rem;
+}
+
+@media (min-width: 1100px) and (min-height: 720px) {
+  .stadiumShell {
+    max-height: calc(100vh - 220px);
+  }
+
+  .stadium {
+    max-height: calc(100vh - 220px);
+    object-fit: contain;
+  }
+}
+
+@media (max-width: 900px) {
+  .appShell {
+    padding: 18px;
+  }
+
+  .header {
+    align-items: flex-start;
+  }
+
+  .header p {
+    display: none;
+  }
+
+  .workspace {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .controls {
+    order: 2;
+  }
+
+  .previewColumn {
+    order: 1;
+  }
+}
+
+@media (max-width: 560px) {
+  .teamGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .symbolGrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .resultBar {
+    grid-template-columns: 1fr;
+  }
+
+  .resultMeta {
+    justify-items: start;
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teamButton,
+  .teamActive,
+  .choiceButton,
+  .choiceActive,
+  .symbolButton,
+  .symbolActive,
+  .raiseButton,
+  .surpriseButton,
+  .secondaryAction {
+    transition: none;
+  }
+}
+
+.controls {
+  position: relative;
+}
+
+.controls::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background:
+    radial-gradient(
+      circle at 20% 10%,
+      rgba(253, 186, 116, 0.08),
+      transparent 38%
+    );
+  pointer-events: none;
+}
+
+.stadiumShell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -80px 120px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+}
+
+.teamActive,
+.choiceActive,
+.symbolActive {
+  position: relative;
+  overflow: hidden;
+}
+
+.teamActive::after,
+.choiceActive::after,
+.symbolActive::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      120deg,
+      transparent 15%,
+      rgba(255, 255, 255, 0.12) 45%,
+      transparent 75%
+    );
+  transform: translateX(-125%);
+  animation: selected-option-shine 1.8s ease-out forwards;
+  pointer-events: none;
+}
+
+.raiseButton {
+  position: relative;
+  overflow: hidden;
+}
+
+.raiseButton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -45%;
+  width: 34%;
+  height: 100%;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.38),
+      transparent
+    );
+  transform: skewX(-18deg);
+  transition: left 520ms ease;
+}
+
+.raiseButton:hover::after {
+  left: 115%;
+}
+
+.secondaryAction:focus-visible,
+.raiseButton:focus-visible,
+.surpriseButton:focus-visible,
+.teamButton:focus-visible,
+.teamActive:focus-visible,
+.choiceButton:focus-visible,
+.choiceActive:focus-visible,
+.symbolButton:focus-visible,
+.symbolActive:focus-visible {
+  outline: 2px solid #fed7aa;
+  outline-offset: 3px;
+}
+
+@keyframes selected-option-shine {
+  from {
+    transform: translateX(-125%);
+  }
+
+  to {
+    transform: translateX(125%);
+  }
+}
+
+.symbolButton,
+.symbolActive {
+  position: relative;
+}
+
+.bestFitBadge {
+  position: absolute;
+  top: -7px;
+  right: -6px;
+  z-index: 3;
+  border: 1px solid rgba(253, 186, 116, 0.55);
+  border-radius: 999px;
+  background: #111827;
+  padding: 2px 5px;
+  color: #fed7aa;
+  font-size: 0.42rem;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+.symbolActive .bestFitBadge {
+  background: #fdba74;
+  color: #08101f;
+}
+
+@media (max-width: 560px) {
+  .bestFitBadge {
+    top: -5px;
+    right: -4px;
+    padding: 2px 4px;
+    font-size: 0.36rem;
+  }
+}
+
+.selectionPreview {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(253, 186, 116, 0.2);
+  border-radius: 15px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(253, 186, 116, 0.09),
+      rgba(15, 23, 42, 0.56) 45%,
+      rgba(2, 6, 23, 0.72)
+    );
+  padding: 13px 14px 12px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 10px 30px rgba(0, 0, 0, 0.14);
+}
+
+.selectionPreview::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -40%;
+  width: 35%;
+  height: 170%;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.08),
+      transparent
+    );
+  transform: skewX(-18deg);
+  animation: preview-light-pass 1.1s ease-out forwards;
+  pointer-events: none;
+}
+
+.previewTopLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.previewTopLine > span {
+  color: #fdba74;
+  font-size: 0.57rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.palettePreview {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.palettePreview i {
+  display: block;
+  width: 17px;
+  height: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.28);
+}
+
+.selectionPreview strong {
+  display: block;
+  margin-top: 8px;
+  color: #f8fafc;
+  font-size: 0.84rem;
+  line-height: 1.25;
+}
+
+.selectionPreview p {
+  margin: 5px 0 0;
+  color: #94a3b8;
+  font-size: 0.68rem;
+  line-height: 1.45;
+}
+
+.selectionPreview small {
+  display: block;
+  margin-top: 7px;
+  color: #64748b;
+  font-size: 0.57rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+}
+
+@keyframes preview-light-pass {
+  from {
+    left: -40%;
+  }
+
+  to {
+    left: 125%;
+  }
+}
+
+@media (max-height: 820px) and (min-width: 901px) {
+  .selectionPreview {
+    padding: 10px 12px;
+  }
+
+  .selectionPreview p {
+    display: none;
+  }
+
+  .selectionPreview small {
+    margin-top: 4px;
+  }
+}
+
+/* -------------------------------------------------------
+   Winning cleanup: national identity and reduced clutter
+------------------------------------------------------- */
+
+.bestFitBadge {
+  display: none !important;
+}
+
+.symbolButton,
+.symbolActive {
+  overflow: visible;
+}
+
+.recommendedDot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 6px;
+  height: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 50%;
+  background: #fdba74;
+  box-shadow:
+    0 0 0 2px rgba(2, 6, 23, 0.88),
+    0 0 10px rgba(253, 186, 116, 0.72);
+  pointer-events: none;
+}
+
+.symbolActive .recommendedDot {
+  background: #ffffff;
+  box-shadow:
+    0 0 0 2px rgba(253, 186, 116, 0.82),
+    0 0 12px rgba(255, 255, 255, 0.8);
+}
+
+.selectionPreview {
+  padding: 11px 13px 10px;
+}
+
+.selectionPreview strong {
+  margin-top: 7px;
+  font-size: 0.8rem;
+}
+
+.selectionPreview p {
+  display: -webkit-box;
+  margin-top: 4px;
+  overflow: hidden;
+  color: #94a3b8;
+  font-size: 0.64rem;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.selectionPreview small {
+  margin-top: 5px;
+  color: #64748b;
+  font-size: 0.52rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.palettePreview i {
+  width: 19px;
+  height: 6px;
+  transition:
+    background 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.palettePreview i:hover {
+  transform: scaleX(1.18);
+}
+
+@media (max-height: 850px) and (min-width: 901px) {
+  .controls {
+    gap: 14px;
+    padding: 17px;
+  }
+
+  .selectionPreview p {
+    -webkit-line-clamp: 1;
+  }
+
+  .selectionPreview small {
+    display: none;
+  }
+}
+
+/* =======================================================
+   Story-panel refinement
+   Clearer hierarchy, full descriptions, less clutter
+======================================================= */
+
+.workspace {
+  grid-template-columns: 320px minmax(0, 1fr);
+}
+
+.controls {
+  gap: 15px;
+  padding: 18px;
+}
+
+.selectionPreview {
+  overflow: hidden;
+  padding: 13px 14px 12px;
+}
+
+.previewTopLine {
+  min-height: 20px;
+}
+
+.previewRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fitChip {
+  border: 1px solid rgba(253, 186, 116, 0.38);
+  border-radius: 999px;
+  background: rgba(253, 186, 116, 0.1);
+  padding: 3px 7px;
+  color: #fed7aa;
+  font-size: 0.46rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.palettePreview {
+  flex-shrink: 0;
+}
+
+.palettePreview i {
+  width: 20px;
+  height: 7px;
+  transform-origin: center;
+}
+
+.previewTitle {
+  display: block;
+  margin-top: 8px;
+  color: #f8fafc;
+  font-size: 0.86rem;
+  line-height: 1.25;
+}
+
+.selectionFormula {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 9px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.selectionFormula span,
+.selectionFormula em {
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 7px;
+  background: rgba(2, 6, 23, 0.48);
+  padding: 4px 6px;
+  color: #cbd5e1;
+  font-size: 0.51rem;
+  font-style: normal;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.selectionFormula em {
+  border-color: rgba(253, 186, 116, 0.22);
+  color: #fdba74;
+}
+
+.selectionFormula b {
+  color: #64748b;
+  font-size: 0.56rem;
+}
+
+.previewSummary {
+  display: block;
+  margin: 8px 0 0;
+  overflow: visible;
+  color: #94a3b8;
+  font-size: 0.65rem;
+  line-height: 1.45;
+  -webkit-line-clamp: unset;
+}
+
+.storyDetails {
+  overflow: hidden;
+  margin-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.065);
+  padding-top: 9px;
+  display: grid;
+  gap: 8px;
+}
+
+.storyDetails > div {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+}
+
+.storyDetails span {
+  color: #fdba74;
+  font-size: 0.48rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.storyDetails p {
+  margin: 0;
+  color: #a8b3c5;
+  font-size: 0.59rem;
+  line-height: 1.45;
+}
+
+.previewFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  margin-top: 9px;
+}
+
+.previewFooter > span {
+  color: #64748b;
+  font-size: 0.48rem;
+  font-weight: 750;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.storyToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 0;
+  background: transparent;
+  padding: 2px 0;
+  color: #fdba74;
+  cursor: pointer;
+  font-size: 0.52rem;
+  font-weight: 900;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.storyToggle:hover {
+  color: #fed7aa;
+}
+
+.storyToggle span {
+  display: inline-block;
+  font-size: 0.65rem;
+}
+
+.storyToggle:focus-visible {
+  border-radius: 4px;
+  outline: 2px solid #fed7aa;
+  outline-offset: 3px;
+}
+
+/* Remove old icon-corner recommendation dots.
+   The recommendation is now clearly shown in the story panel. */
+.recommendedDot {
+  display: none !important;
+}
+
+@media (max-height: 850px) and (min-width: 901px) {
+  .workspace {
+    grid-template-columns: 305px minmax(0, 1fr);
+  }
+
+  .controls {
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .previewSummary {
+    font-size: 0.6rem;
+  }
+
+  .selectionFormula span,
+  .selectionFormula em {
+    padding: 3px 5px;
+    font-size: 0.46rem;
+  }
+
+  .storyDetails {
+    max-height: 118px;
+    overflow-y: auto;
+    padding-right: 3px;
+  }
+}
+
+@media (max-width: 900px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .selectionFormula {
+    flex-wrap: wrap;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 420px) {
+  .previewRight {
+    gap: 5px;
+  }
+
+  .fitChip {
+    display: none;
+  }
+
+  .storyDetails > div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+
+/* =======================================================
+   Clean three-step flow
+======================================================= */
+
+.briefingHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.briefingHeader > div {
+  display: grid;
+  gap: 2px;
+}
+
+.briefingHeader span {
+  color: #fdba74;
+  font-size: 0.54rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.briefingHeader strong {
+  color: #cbd5e1;
+  font-size: 0.66rem;
+  line-height: 1.35;
+}
+
+.resetButton {
+  border: 0;
+  background: transparent;
+  padding: 4px;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 0.54rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.resetButton:hover:not(:disabled) {
+  color: #fed7aa;
+}
+
+.resetButton:disabled {
+  cursor: default;
+  opacity: 0.25;
+}
+
+.progressTrack {
+  height: 3px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.progressTrack > div {
+  height: 100%;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      90deg,
+      #fdba74,
+      #fb923c
+    );
+  box-shadow: 0 0 12px rgba(253, 186, 116, 0.48);
+}
+
+.selectionPreview {
+  min-height: 118px;
+  padding: 13px 14px;
+}
+
+.emptyBriefing {
+  min-height: 91px;
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.emptyBriefing span {
+  color: rgba(253, 186, 116, 0.48);
+  font-size: 2.1rem;
+  font-weight: 950;
+  letter-spacing: -0.08em;
+}
+
+.emptyBriefing p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.7rem;
+  line-height: 1.55;
+}
+
+.previewSummary {
+  margin-top: 8px;
+  color: #94a3b8;
+  font-size: 0.64rem;
+  line-height: 1.45;
+}
+
+.selectionFormula {
+  flex-wrap: nowrap;
+}
+
+.formulaComplete {
+  border-color: rgba(253, 186, 116, 0.23) !important;
+  color: #f8fafc !important;
+}
+
+.formulaPending {
+  border-style: dashed !important;
+  color: #64748b !important;
+}
+
+.fitChip {
+  padding: 3px 6px;
+  font-size: 0.43rem;
+}
+
+.raiseButton:disabled {
+  background: #334155;
+  color: #94a3b8;
+  box-shadow: none;
+}
+
+.raiseButton:disabled::after {
+  display: none;
+}
+
+/* Remove the discarded expandable-story UI. */
+.storyDetails,
+.previewFooter,
+.storyToggle {
+  display: none !important;
+}
+
+@media (max-height: 850px) and (min-width: 901px) {
+  .selectionPreview {
+    min-height: 105px;
+    padding: 10px 12px;
+  }
+
+  .emptyBriefing {
+    min-height: 78px;
+  }
+
+  .briefingHeader strong {
+    font-size: 0.61rem;
+  }
+}
+
+/* =======================================================
+   Final readability and icon cleanup
+======================================================= */
+
+/* Never silently truncate the briefing message. */
+.previewSummary {
+  display: block !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  white-space: normal !important;
+  -webkit-box-orient: initial !important;
+  -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
+}
+
+/* Allow the briefing card to grow enough to show its copy. */
+.selectionPreview {
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+}
+
+/* Keep the compact controls readable without crowding. */
+.controls {
+  align-self: center;
+}
+
+/* Make every unselected symbol clearly visible. */
+.symbolButton {
+  color: #dbe5f3;
+}
+
+.symbolButton:hover {
+  color: #ffffff;
+}
+
+.symbolActive {
+  color: #fed7aa;
+}
+
+/* Ensure SVG artwork cannot be clipped by button bounds. */
+.symbolButton svg,
+.symbolActive svg {
+  overflow: visible;
+}
+
+/* Small accessible explanation on hover. */
+.symbolButton::before,
+.symbolActive::before {
+  content: attr(title);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  z-index: 20;
+  width: max-content;
+  max-width: 110px;
+  transform: translate(-50%, 4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  background: rgba(2, 6, 23, 0.96);
+  padding: 5px 7px;
+  color: #e2e8f0;
+  font-size: 0.48rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.symbolButton:hover::before,
+.symbolActive:hover::before {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (max-height: 850px) and (min-width: 901px) {
+  .previewSummary {
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+  }
+
+  .selectionPreview {
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .symbolButton::before,
+  .symbolActive::before {
+    transition: none;
+  }
+}

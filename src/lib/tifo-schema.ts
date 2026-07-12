@@ -48,7 +48,7 @@ export const tifoRequestSchema = z.object({
 });
 
 export const tifoDesignSchema = z.object({
-  slogan: z.string().min(2).max(24),
+  slogan: z.string().min(2).max(18),
   layout: z.enum(layoutIds),
   animation: z.enum(animationIds),
   energy: z.number().int().min(60).max(100),

@@ -16,7 +16,7 @@ const fallbackPlans: Record<
   Omit<TifoDesign, "designReason">
 > = {
   believe: {
-    slogan: "BELIEF BECOMES ROAR",
+    slogan: "BELIEVE BEYOND",
     layout: "radiating-burst",
     animation: "center-out",
     energy: 88,
@@ -28,7 +28,7 @@ const fallbackPlans: Record<
     energy: 95,
   },
   unite: {
-    slogan: "ONE STAND. ONE VOICE.",
+    slogan: "ONE VOICE",
     layout: "split-banner",
     animation: "row-wave",
     energy: 91,

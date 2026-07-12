@@ -650,16 +650,11 @@ function getSeatColor(
   if (emotion === "believe") {
     const upwardPath =
       Math.abs(normalizedX) <
-      0.045 + (normalizedY + 1) * 0.075;
-
-    const liftedShoulders =
-      normalizedY < -0.28 &&
-      Math.abs(normalizedX) <
-        0.2 + Math.abs(normalizedY) * 0.32;
+      0.06 + (normalizedY + 1) * 0.09;
 
     if (
-      (upwardPath && normalizedY < 0.58) ||
-      liftedShoulders
+      upwardPath &&
+      normalizedY < 0.56
     ) {
       baseColor = palette.accent;
     }
@@ -670,63 +665,30 @@ function getSeatColor(
       normalizedX -
       normalizedY * 0.72;
 
-    const counterDiagonal =
-      normalizedX +
-      normalizedY * 0.58;
-
     if (
-      (diagonal > -0.035 &&
-        diagonal < 0.09) ||
-      (
-        counterDiagonal > 0.52 &&
-        counterDiagonal < 0.59
-      )
+      diagonal > -0.04 &&
+      diagonal < 0.12
     ) {
       baseColor = palette.accent;
     }
   }
 
   if (emotion === "unite") {
-    const leftConvergence =
-      normalizedX < 0 &&
-      Math.abs(
-        normalizedX +
-          0.42 +
-          normalizedY * 0.24
-      ) < 0.1;
-
-    const rightConvergence =
-      normalizedX > 0 &&
-      Math.abs(
-        normalizedX -
-          0.42 -
-          normalizedY * 0.24
-      ) < 0.1;
-
     const centerRibbon =
       Math.abs(normalizedX) <
-      0.055 + Math.abs(normalizedY) * 0.055;
+      0.08 + Math.abs(normalizedY) * 0.08;
 
-    if (
-      leftConvergence ||
-      rightConvergence ||
-      centerRibbon
-    ) {
+    if (centerRibbon) {
       baseColor = palette.accent;
     }
   }
 
   if (emotion === "remember") {
     const tributeBand =
-      normalizedY > 0.25 &&
-      normalizedY < 0.4;
+      normalizedY > 0.28 &&
+      normalizedY < 0.46;
 
-    const quietCenter =
-      Math.abs(normalizedX) < 0.045 &&
-      normalizedY > -0.58 &&
-      normalizedY < 0.64;
-
-    if (tributeBand || quietCenter) {
+    if (tributeBand) {
       baseColor = palette.accent;
     }
   }
@@ -889,36 +851,17 @@ function StadiumPreview({
         (_, index) => {
           const row = Math.floor(index / columns);
           const column = index % columns;
-          const rowProgress =
-            row / Math.max(rows - 1, 1);
-
-          const rowWidth = 820 + row * 19;
+          const rowWidth = 850 + row * 14;
           const gap = rowWidth / columns;
           const startX = 600 - rowWidth / 2;
-
-          const normalizedColumn =
-            (column - (columns - 1) / 2) /
-            ((columns - 1) / 2);
-
-          const rowCurve =
-            Math.pow(Math.abs(normalizedColumn), 1.7) *
-            (8 + rowProgress * 10);
-
-          const perspectiveDrop =
-            rowProgress * rowProgress * 13;
 
           return {
             index,
             row,
             column,
             x: startX + column * gap + 3,
-            y:
-              170 +
-              row * 27 +
-              rowCurve +
-              perspectiveDrop,
-            width: Math.max(18, gap - 6),
-            height: 16 + rowProgress * 3,
+            y: 176 + row * 28,
+            width: Math.max(19, gap - 6),
           };
         },
       ),
@@ -1217,14 +1160,13 @@ function StadiumPreview({
               x,
               y,
               width,
-              height,
             }) => (
               <rect
                 key={index}
                 x={x}
                 y={y}
                 width={width}
-                height={height}
+                height="18"
                 rx="3"
                 fill={getSeatColor(
                   team,
@@ -1272,7 +1214,7 @@ function StadiumPreview({
         <motion.circle
           cx="600"
           cy="350"
-          r="108"
+          r="132"
           fill={symbolColor}
           filter={`url(#glow-${generationId})`}
           initial={{
@@ -1298,7 +1240,7 @@ function StadiumPreview({
           }}
         />
 
-        <g transform="translate(514 262) scale(1.72)">
+        <g transform="translate(495 243) scale(2.1)">
           <motion.g
             initial={{
               opacity: 0,
@@ -1327,89 +1269,6 @@ function StadiumPreview({
             />
           </motion.g>
         </g>
-
-        <motion.g
-          className={styles.supporterLayer}
-          initial={{
-            opacity: 0,
-            y: 18,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            delay: symbolDelay + 0.16,
-            duration: 0.75,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-        >
-          {Array.from({ length: 42 }, (_, index) => {
-            const x = 122 + index * 23.4;
-            const raised = index % 5 === 0;
-            const stagger = index % 3;
-
-            return (
-              <motion.g
-                key={index}
-                animate={{
-                  y:
-                    emotion === "unite"
-                      ? [0, -2, 0]
-                      : emotion === "defy"
-                        ? [0, -3, 0]
-                        : [0, -1.5, 0],
-                }}
-                transition={{
-                  delay:
-                    finalPulseDelay +
-                    stagger * 0.08,
-                  duration:
-                    emotion === "remember"
-                      ? 2.8
-                      : 2.1,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                <circle
-                  cx={x}
-                  cy="507"
-                  r={raised ? 5.2 : 4.4}
-                  fill="#020617"
-                  opacity="0.9"
-                />
-
-                <path
-                  d={
-                    raised
-                      ? `M${x - 4} 513L${x - 8} 533H${x + 8}L${x + 4} 513Z`
-                      : `M${x - 4} 513L${x - 6} 533H${x + 6}L${x + 4} 513Z`
-                  }
-                  fill="#020617"
-                  opacity="0.92"
-                />
-
-                {raised && (
-                  <>
-                    <path
-                      d={`M${x - 3} 518L${x - 10} 500`}
-                      stroke="#020617"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d={`M${x + 3} 518L${x + 10} 500`}
-                      stroke="#020617"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                    />
-                  </>
-                )}
-              </motion.g>
-            );
-          })}
-        </motion.g>
 
         <motion.g
           initial={{
@@ -1607,18 +1466,6 @@ function StadiumPreview({
           >
             {teamData.code} · CROWD INTENSITY{" "}
             {design.energy}
-          </text>
-
-          <text
-            x="600"
-            y="628"
-            textAnchor="middle"
-            fill="#94a3b8"
-            fontSize="13"
-            fontWeight="700"
-            letterSpacing="2"
-          >
-            DIRECTED BY GEMINI · RENDERED PROCEDURALLY
           </text>
         </motion.g>
       </motion.svg>
@@ -1903,11 +1750,7 @@ export default function TifoForge() {
                 1 · Team
               </div>
 
-              <div
-                className={styles.teamGrid}
-                role="group"
-                aria-label="Choose a national team"
-              >
+              <div className={styles.teamGrid}>
                 {teamIds.map((teamId) => {
                   const team = teams[teamId];
 
@@ -1919,8 +1762,6 @@ export default function TifoForge() {
                     <button
                       key={teamId}
                       type="button"
-                      aria-pressed={active}
-                      aria-label={`Choose ${team.name}`}
                       className={
                         active
                           ? styles.teamActive
@@ -1947,20 +1788,11 @@ export default function TifoForge() {
                 2 · Passion
               </div>
 
-              <div
-                className={styles.passionGrid}
-                role="group"
-                aria-label="Choose a supporter passion"
-              >
+              <div className={styles.passionGrid}>
                 {emotionIds.map((emotionId) => (
                   <button
                     key={emotionId}
                     type="button"
-                    aria-pressed={
-                      hasChosenEmotion &&
-                      selectedEmotion === emotionId
-                    }
-                    aria-label={`Choose ${emotions[emotionId].label}`}
                     className={
                       hasChosenEmotion &&
                       selectedEmotion === emotionId
@@ -1986,20 +1818,14 @@ export default function TifoForge() {
                 3 · Symbol
               </div>
 
-              <div
-                className={styles.symbolGrid}
-                role="group"
-                aria-label="Choose a visual symbol"
-              >
+              <div className={styles.symbolGrid}>
                 {symbolIds.map((symbolId) => (
                   <button
                     key={symbolId}
                     type="button"
                     title={symbols[symbolId].label}
-                    aria-label={`Choose ${symbols[symbolId].label}`}
-                    aria-pressed={
-                      hasChosenSymbol &&
-                      selectedSymbol === symbolId
+                    aria-label={
+                      symbols[symbolId].label
                     }
                     className={
                       hasChosenSymbol &&
@@ -2041,7 +1867,7 @@ export default function TifoForge() {
               <div>
                 <span>Build your display</span>
                 <strong>
-                  Three choices. One unforgettable stand.
+                  Choose 3 elements. Raise 1 unforgettable stand.
                 </strong>
               </div>
 

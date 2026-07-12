@@ -75,6 +75,7 @@ function SymbolGlyph({
           stroke={color}
           strokeWidth="6"
         />
+
         <rect
           x="14"
           y="67"
@@ -91,6 +92,14 @@ function SymbolGlyph({
           rx="3"
           fill={color}
         />
+
+        <circle cx="18" cy="27" r="5" fill={outlineColor} />
+        <circle cx="50" cy="14" r="5" fill={outlineColor} />
+        <circle cx="82" cy="27" r="5" fill={outlineColor} />
+
+        <circle cx="18" cy="27" r="3" fill={color} />
+        <circle cx="50" cy="14" r="3" fill={color} />
+        <circle cx="82" cy="27" r="3" fill={color} />
       </g>
     );
   }
@@ -118,6 +127,7 @@ function SymbolGlyph({
           stroke={color}
           strokeWidth="7"
         />
+
         <path
           d={inner}
           fill={outlineColor}
@@ -161,43 +171,48 @@ function SymbolGlyph({
   }
 
   if (symbol === "rising-sun") {
+    const rays =
+      "M50 8V23M18 21L29 33M82 21L71 33M6 55H21M94 55H79M18 86L30 74M82 86L70 74";
+
     return (
       <g
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
+        <circle
+          cx="50"
+          cy="55"
+          r="26"
+          fill={outlineColor}
+        />
+        <circle
+          cx="50"
+          cy="55"
+          r="20"
+          fill={color}
+        />
+
         <path
-          d="M18 66A32 32 0 0 1 82 66"
+          d={rays}
+          stroke={outlineColor}
+          strokeWidth="14"
+        />
+        <path
+          d={rays}
+          stroke={color}
+          strokeWidth="7"
+        />
+
+        <path
+          d="M10 88H90"
           stroke={outlineColor}
           strokeWidth="15"
         />
         <path
-          d="M18 66A32 32 0 0 1 82 66"
+          d="M10 88H90"
           stroke={color}
           strokeWidth="8"
-        />
-
-        <path
-          d="M10 70H90"
-          stroke={outlineColor}
-          strokeWidth="15"
-        />
-        <path
-          d="M10 70H90"
-          stroke={color}
-          strokeWidth="8"
-        />
-
-        <path
-          d="M50 18V30M25 30L34 39M75 30L66 39"
-          stroke={outlineColor}
-          strokeWidth="13"
-        />
-        <path
-          d="M50 18V30M25 30L34 39M75 30L66 39"
-          stroke={color}
-          strokeWidth="6"
         />
       </g>
     );
@@ -352,21 +367,23 @@ function isSymbolSeat(
   }
 
   if (symbol === "rising-sun") {
+    const circle =
+      x * x + Math.pow(y + 0.05, 2) < 0.2;
+
     const horizon =
-      Math.abs(y - 0.34) < 0.1 &&
-      Math.abs(x) < 0.74;
+      Math.abs(y - 0.45) < 0.09 &&
+      Math.abs(x) < 0.72;
 
-    const sunriseArc =
-      y > -0.05 &&
-      y < 0.36 &&
-      x * x + Math.pow(y - 0.34, 2) < 0.34;
+    const verticalRay =
+      Math.abs(x) < 0.08 &&
+      y > -0.72 &&
+      y < -0.22;
 
-    const openSky =
-      y < 0.14 &&
-      x * x + Math.pow(y - 0.34, 2) > 0.17 &&
-      x * x + Math.pow(y - 0.34, 2) < 0.34;
+    const diagonalRay =
+      Math.abs(Math.abs(x) + y - 0.65) < 0.11 &&
+      y < -0.08;
 
-    return horizon || (sunriseArc && !openSky);
+    return circle || horizon || verticalRay || diagonalRay;
   }
 
   if (symbol === "wings") {
@@ -425,7 +442,7 @@ function darkenHex(hex: string, factor: number) {
     .join("")}`;
 }
 
-function getSupporterBaseColor(
+function getNationalBaseColor(
   team: TeamId,
   row: number,
   column: number,
@@ -433,107 +450,94 @@ function getSupporterBaseColor(
   columns: number,
   palette: Palette,
 ) {
-  const x = column / Math.max(columns - 1, 1);
-  const y = row / Math.max(rows - 1, 1);
+  const normalizedX = column / Math.max(columns - 1, 1);
+  const normalizedY = row / Math.max(rows - 1, 1);
 
-  const centerX =
-    (column - (columns - 1) / 2) / (columns / 2);
-
-  const centerY =
-    (row - (rows - 1) / 2) / (rows / 2);
-
-  /*
-   * These are abstract supporter patterns based only on
-   * contemporary national-team palettes.
-   *
-   * They intentionally avoid reproducing historical,
-   * military, colonial, imperial, or political flags.
-   */
+  const centerX = (column - (columns - 1) / 2) / (columns / 2);
+  const centerY = (row - (rows - 1) / 2) / (rows / 2);
 
   if (team === "argentina") {
-    const verticalRibbon =
-      Math.floor(x * 6) % 2 === 0;
+    const stripe = Math.floor(normalizedX * 5);
 
-    const goldCore =
-      Math.abs(centerX) < 0.1 &&
-      Math.abs(centerY) < 0.3;
-
-    if (goldCore) {
+    if (
+      Math.abs(centerX) < 0.13 &&
+      Math.abs(centerY) < 0.22
+    ) {
       return palette.accent;
     }
 
-    return verticalRibbon
+    return stripe % 2 === 0
       ? palette.primary
       : palette.secondary;
   }
 
   if (team === "brazil") {
-    const centralDiamond =
-      Math.abs(centerX) * 0.95 +
+    const diamond =
+      Math.abs(centerX) * 0.9 +
         Math.abs(centerY) <
-      0.62;
+      0.72;
 
-    const innerCore =
+    const center =
       centerX * centerX +
         centerY * centerY <
-      0.11;
+      0.12;
 
-    if (innerCore) {
+    if (center) {
       return palette.accent;
     }
 
-    return centralDiamond
-      ? palette.primary
-      : palette.secondary;
+    return diamond
+      ? palette.secondary
+      : palette.primary;
   }
 
   if (team === "croatia") {
-    const largeBlock =
-      (Math.floor(column / 4) +
-        Math.floor(row / 3)) %
+    const checker =
+      (Math.floor(column / 2) +
+        Math.floor(row / 2)) %
       2;
 
-    const blueFoundation =
-      y > 0.8;
-
-    if (blueFoundation) {
+    if (
+      normalizedY > 0.82 ||
+      normalizedY < 0.08
+    ) {
       return palette.accent;
     }
 
-    return largeBlock === 0
+    return checker === 0
       ? palette.primary
       : palette.secondary;
   }
 
   if (team === "france") {
-    if (x < 0.32) {
+    if (normalizedX < 0.34) {
       return palette.primary;
     }
 
-    if (x > 0.68) {
-      return palette.accent;
+    if (normalizedX < 0.67) {
+      return palette.secondary;
     }
 
-    return palette.secondary;
+    return palette.accent;
   }
 
   if (team === "japan") {
-    const redCore =
+    const redDisc =
       centerX * centerX +
         centerY * centerY <
-      0.18;
+      0.25;
 
-    const blueFoundation =
-      y > 0.78;
+    const blueFrame =
+      normalizedX < 0.08 ||
+      normalizedX > 0.92 ||
+      normalizedY < 0.08 ||
+      normalizedY > 0.92;
 
-    const blueCrown =
-      y < 0.08;
-
-    if (redCore) {
+    if (redDisc) {
       return palette.accent;
     }
 
-    if (blueFoundation || blueCrown) {
+    if (blueFrame) {
       return palette.primary;
     }
 
@@ -541,56 +545,54 @@ function getSupporterBaseColor(
   }
 
   if (team === "morocco") {
-    const greenChevron =
-      Math.abs(
-        Math.abs(centerX) +
-          centerY * 0.68 -
-          0.42,
-      ) < 0.12;
+    const greenDiamond =
+      Math.abs(centerX) +
+        Math.abs(centerY) <
+      0.72;
 
-    const goldCore =
+    const goldCenter =
       centerX * centerX +
         centerY * centerY <
-      0.07;
+      0.08;
 
-    if (goldCore) {
+    if (goldCenter) {
       return palette.accent;
     }
 
-    return greenChevron
+    return greenDiamond
       ? palette.secondary
       : palette.primary;
   }
 
   if (team === "spain") {
-    const goldCenter =
-      y > 0.27 &&
-      y < 0.73;
+    if (
+      normalizedY < 0.25 ||
+      normalizedY > 0.75
+    ) {
+      return palette.primary;
+    }
 
-    const blueEdge =
-      x < 0.045 ||
-      x > 0.955;
-
-    if (blueEdge) {
+    if (
+      normalizedX < 0.08 ||
+      normalizedX > 0.92
+    ) {
       return palette.accent;
     }
 
-    return goldCenter
-      ? palette.secondary
-      : palette.primary;
+    return palette.secondary;
   }
 
-  const navyCrown =
-    y < 0.25;
+  const stripe = Math.floor(normalizedY * 9);
 
-  const horizontalBand =
-    Math.floor(y * 8) % 2 === 0;
+  const canton =
+    normalizedX < 0.38 &&
+    normalizedY < 0.48;
 
-  if (navyCrown) {
+  if (canton) {
     return palette.primary;
   }
 
-  return horizontalBand
+  return stripe % 2 === 0
     ? palette.accent
     : palette.secondary;
 }
@@ -633,7 +635,7 @@ function getSeatColor(
       normalizedY * normalizedY,
   );
 
-  let baseColor = getSupporterBaseColor(
+  let baseColor = getNationalBaseColor(
     team,
     row,
     column,
@@ -643,136 +645,72 @@ function getSeatColor(
   );
 
   /*
-   * Passion overlays are intentionally restrained.
-   * They add direction without destroying the team identity.
+   * Each passion now changes the stadium composition.
+   * This makes the choice visually meaningful—not just text.
    */
 
   if (emotion === "believe") {
-    const upwardPath =
+    const risingRay =
       Math.abs(normalizedX) <
-      0.045 + (normalizedY + 1) * 0.075;
+      0.08 + Math.max(0, normalizedY + 0.7) * 0.2;
 
-    const liftedShoulders =
-      normalizedY < -0.28 &&
-      Math.abs(normalizedX) <
-        0.2 + Math.abs(normalizedY) * 0.32;
+    const upperGlow =
+      normalizedY < -0.35 &&
+      Math.abs(normalizedX) < 0.52;
 
-    if (
-      (upwardPath && normalizedY < 0.58) ||
-      liftedShoulders
-    ) {
+    if (risingRay || upperGlow) {
       baseColor = palette.accent;
     }
   }
 
   if (emotion === "defy") {
     const diagonal =
-      normalizedX -
-      normalizedY * 0.72;
+      column - row * 1.65;
 
-    const counterDiagonal =
-      normalizedX +
-      normalizedY * 0.58;
-
-    if (
-      (diagonal > -0.035 &&
-        diagonal < 0.09) ||
-      (
-        counterDiagonal > 0.52 &&
-        counterDiagonal < 0.59
-      )
-    ) {
+    if (diagonal > 7.5 && diagonal < 12.5) {
       baseColor = palette.accent;
     }
   }
 
   if (emotion === "unite") {
-    const leftConvergence =
-      normalizedX < 0 &&
-      Math.abs(
-        normalizedX +
-          0.42 +
-          normalizedY * 0.24
-      ) < 0.1;
-
-    const rightConvergence =
-      normalizedX > 0 &&
-      Math.abs(
-        normalizedX -
-          0.42 -
-          normalizedY * 0.24
-      ) < 0.1;
-
-    const centerRibbon =
+    const converging =
       Math.abs(normalizedX) <
-      0.055 + Math.abs(normalizedY) * 0.055;
+      0.12 + Math.abs(normalizedY) * 0.22;
 
-    if (
-      leftConvergence ||
-      rightConvergence ||
-      centerRibbon
-    ) {
+    if (converging) {
       baseColor = palette.accent;
     }
   }
 
   if (emotion === "remember") {
-    const tributeBand =
-      normalizedY > 0.25 &&
-      normalizedY < 0.4;
+    const memorialBand =
+      normalizedY > 0.32 &&
+      normalizedY < 0.58;
 
-    const quietCenter =
-      Math.abs(normalizedX) < 0.045 &&
-      normalizedY > -0.58 &&
-      normalizedY < 0.64;
+    const centerMark =
+      Math.abs(normalizedX) < 0.08;
 
-    if (tributeBand || quietCenter) {
+    if (memorialBand || centerMark) {
       baseColor = palette.accent;
     }
   }
 
   /*
-   * Create a soft, controlled clearing around the emblem.
-   * This prevents the center from becoming visually noisy.
+   * Retain a subtle center clearing so the main emblem
+   * remains readable without erasing the national mosaic.
    */
 
-  if (centerDistance < 0.24) {
-    return darkenHex(baseColor, 0.32);
+  if (centerDistance < 0.26) {
+    return darkenHex(baseColor, 0.35);
   }
 
-  if (centerDistance < 0.38) {
-    return darkenHex(baseColor, 0.64);
-  }
-
-  /*
-   * Gemini's layout choice adds only a final accent,
-   * never a second competing pattern.
-   */
-
-  if (layout === "diagonal-rise") {
-    const diagonal =
-      normalizedX -
-      normalizedY * 0.75;
-
-    if (
-      diagonal > 0.28 &&
-      diagonal < 0.36
-    ) {
-      return palette.accent;
-    }
+  if (centerDistance < 0.39) {
+    return darkenHex(baseColor, 0.68);
   }
 
   if (
     layout === "split-banner" &&
-    Math.abs(normalizedX) < 0.045
-  ) {
-    return palette.accent;
-  }
-
-  if (
-    layout === "radiating-burst" &&
-    centerDistance > 0.52 &&
-    centerDistance < 0.6
+    Math.abs(column - centerColumn) < 1.2
   ) {
     return palette.accent;
   }
@@ -889,36 +827,17 @@ function StadiumPreview({
         (_, index) => {
           const row = Math.floor(index / columns);
           const column = index % columns;
-          const rowProgress =
-            row / Math.max(rows - 1, 1);
-
-          const rowWidth = 820 + row * 19;
+          const rowWidth = 850 + row * 14;
           const gap = rowWidth / columns;
           const startX = 600 - rowWidth / 2;
-
-          const normalizedColumn =
-            (column - (columns - 1) / 2) /
-            ((columns - 1) / 2);
-
-          const rowCurve =
-            Math.pow(Math.abs(normalizedColumn), 1.7) *
-            (8 + rowProgress * 10);
-
-          const perspectiveDrop =
-            rowProgress * rowProgress * 13;
 
           return {
             index,
             row,
             column,
             x: startX + column * gap + 3,
-            y:
-              170 +
-              row * 27 +
-              rowCurve +
-              perspectiveDrop,
-            width: Math.max(18, gap - 6),
-            height: 16 + rowProgress * 3,
+            y: 176 + row * 28,
+            width: Math.max(19, gap - 6),
           };
         },
       ),
@@ -1167,34 +1086,6 @@ function StadiumPreview({
           strokeWidth="3"
         />
 
-        <motion.rect
-          x="82"
-          y="167"
-          width="518"
-          height="411"
-          fill="#020617"
-          initial={{ x: 0 }}
-          animate={{ x: -535 }}
-          transition={{
-            duration: revealDuration * 0.78,
-            ease: [0.76, 0, 0.24, 1],
-          }}
-        />
-
-        <motion.rect
-          x="600"
-          y="167"
-          width="518"
-          height="411"
-          fill="#020617"
-          initial={{ x: 0 }}
-          animate={{ x: 535 }}
-          transition={{
-            duration: revealDuration * 0.78,
-            ease: [0.76, 0, 0.24, 1],
-          }}
-        />
-
         <motion.g
           initial={passionMotion.initial}
           animate={passionMotion.animate}
@@ -1217,14 +1108,13 @@ function StadiumPreview({
               x,
               y,
               width,
-              height,
             }) => (
               <rect
                 key={index}
                 x={x}
                 y={y}
                 width={width}
-                height={height}
+                height="18"
                 rx="3"
                 fill={getSeatColor(
                   team,
@@ -1272,7 +1162,7 @@ function StadiumPreview({
         <motion.circle
           cx="600"
           cy="350"
-          r="108"
+          r="132"
           fill={symbolColor}
           filter={`url(#glow-${generationId})`}
           initial={{
@@ -1298,7 +1188,7 @@ function StadiumPreview({
           }}
         />
 
-        <g transform="translate(514 262) scale(1.72)">
+        <g transform="translate(495 243) scale(2.1)">
           <motion.g
             initial={{
               opacity: 0,
@@ -1327,89 +1217,6 @@ function StadiumPreview({
             />
           </motion.g>
         </g>
-
-        <motion.g
-          className={styles.supporterLayer}
-          initial={{
-            opacity: 0,
-            y: 18,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            delay: symbolDelay + 0.16,
-            duration: 0.75,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-        >
-          {Array.from({ length: 42 }, (_, index) => {
-            const x = 122 + index * 23.4;
-            const raised = index % 5 === 0;
-            const stagger = index % 3;
-
-            return (
-              <motion.g
-                key={index}
-                animate={{
-                  y:
-                    emotion === "unite"
-                      ? [0, -2, 0]
-                      : emotion === "defy"
-                        ? [0, -3, 0]
-                        : [0, -1.5, 0],
-                }}
-                transition={{
-                  delay:
-                    finalPulseDelay +
-                    stagger * 0.08,
-                  duration:
-                    emotion === "remember"
-                      ? 2.8
-                      : 2.1,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                <circle
-                  cx={x}
-                  cy="507"
-                  r={raised ? 5.2 : 4.4}
-                  fill="#020617"
-                  opacity="0.9"
-                />
-
-                <path
-                  d={
-                    raised
-                      ? `M${x - 4} 513L${x - 8} 533H${x + 8}L${x + 4} 513Z`
-                      : `M${x - 4} 513L${x - 6} 533H${x + 6}L${x + 4} 513Z`
-                  }
-                  fill="#020617"
-                  opacity="0.92"
-                />
-
-                {raised && (
-                  <>
-                    <path
-                      d={`M${x - 3} 518L${x - 10} 500`}
-                      stroke="#020617"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d={`M${x + 3} 518L${x + 10} 500`}
-                      stroke="#020617"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                    />
-                  </>
-                )}
-              </motion.g>
-            );
-          })}
-        </motion.g>
 
         <motion.g
           initial={{
@@ -1540,31 +1347,6 @@ function StadiumPreview({
           strokeWidth="3"
         />
 
-        <motion.ellipse
-          cx="600"
-          cy="684"
-          rx="410"
-          ry="48"
-          fill={teamData.colors.primary}
-          initial={{
-            opacity: 0,
-            scaleX: 0.25,
-          }}
-          animate={{
-            opacity: [0, 0.16, 0.06],
-            scaleX: [0.25, 1.04, 1],
-          }}
-          transition={{
-            delay: sloganDelay + 0.12,
-            duration: 1.35,
-            times: [0, 0.68, 1],
-            ease: [0.16, 1, 0.3, 1],
-          }}
-          style={{
-            transformOrigin: "600px 684px",
-          }}
-        />
-
         <ellipse
           cx="600"
           cy="682"
@@ -1576,6 +1358,65 @@ function StadiumPreview({
           strokeWidth="3"
         />
 
+        <motion.path
+          d="M325 704 C470 650 690 654 855 702"
+          fill="none"
+          stroke="#ffffff"
+          strokeWidth="2"
+          strokeDasharray="8 10"
+          initial={{
+            opacity: 0,
+            pathLength: 0,
+          }}
+          animate={{
+            opacity: [0, 0.34, 0.16],
+            pathLength: 1,
+          }}
+          transition={{
+            delay: sloganDelay + 0.18,
+            duration: 1.45,
+            ease: [0.16, 1, 0.3, 1],
+          }}
+        />
+
+        <motion.g
+          initial={{
+            opacity: 0,
+            x: 315,
+            y: 690,
+            scale: 0.75,
+          }}
+          animate={{
+            opacity: [0, 1, 1],
+            x: [315, 575, 842],
+            y: [690, 655, 691],
+            scale: [0.75, 1.05, 0.9],
+            rotate: [0, 240, 480],
+          }}
+          transition={{
+            delay: sloganDelay + 0.2,
+            duration: 1.55,
+            times: [0, 0.5, 1],
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          style={{
+            transformOrigin: "center",
+          }}
+        >
+          <circle
+            cx="0"
+            cy="0"
+            r="12"
+            fill="#f8fafc"
+            stroke="#020617"
+            strokeWidth="3"
+          />
+
+          <path
+            d="M-4 -8 4 -8 8 -1 3 7-5 7-9 -1Z"
+            fill="#111827"
+          />
+        </motion.g>
 
         <motion.g
           initial={{ opacity: 0 }}
@@ -1607,18 +1448,6 @@ function StadiumPreview({
           >
             {teamData.code} · CROWD INTENSITY{" "}
             {design.energy}
-          </text>
-
-          <text
-            x="600"
-            y="628"
-            textAnchor="middle"
-            fill="#94a3b8"
-            fontSize="13"
-            fontWeight="700"
-            letterSpacing="2"
-          >
-            DIRECTED BY GEMINI · RENDERED PROCEDURALLY
           </text>
         </motion.g>
       </motion.svg>
@@ -1903,11 +1732,7 @@ export default function TifoForge() {
                 1 · Team
               </div>
 
-              <div
-                className={styles.teamGrid}
-                role="group"
-                aria-label="Choose a national team"
-              >
+              <div className={styles.teamGrid}>
                 {teamIds.map((teamId) => {
                   const team = teams[teamId];
 
@@ -1919,8 +1744,6 @@ export default function TifoForge() {
                     <button
                       key={teamId}
                       type="button"
-                      aria-pressed={active}
-                      aria-label={`Choose ${team.name}`}
                       className={
                         active
                           ? styles.teamActive
@@ -1947,20 +1770,11 @@ export default function TifoForge() {
                 2 · Passion
               </div>
 
-              <div
-                className={styles.passionGrid}
-                role="group"
-                aria-label="Choose a supporter passion"
-              >
+              <div className={styles.passionGrid}>
                 {emotionIds.map((emotionId) => (
                   <button
                     key={emotionId}
                     type="button"
-                    aria-pressed={
-                      hasChosenEmotion &&
-                      selectedEmotion === emotionId
-                    }
-                    aria-label={`Choose ${emotions[emotionId].label}`}
                     className={
                       hasChosenEmotion &&
                       selectedEmotion === emotionId
@@ -1986,20 +1800,14 @@ export default function TifoForge() {
                 3 · Symbol
               </div>
 
-              <div
-                className={styles.symbolGrid}
-                role="group"
-                aria-label="Choose a visual symbol"
-              >
+              <div className={styles.symbolGrid}>
                 {symbolIds.map((symbolId) => (
                   <button
                     key={symbolId}
                     type="button"
                     title={symbols[symbolId].label}
-                    aria-label={`Choose ${symbols[symbolId].label}`}
-                    aria-pressed={
-                      hasChosenSymbol &&
-                      selectedSymbol === symbolId
+                    aria-label={
+                      symbols[symbolId].label
                     }
                     className={
                       hasChosenSymbol &&
@@ -2041,7 +1849,7 @@ export default function TifoForge() {
               <div>
                 <span>Build your display</span>
                 <strong>
-                  Three choices. One unforgettable stand.
+                  Choose 3 elements. Raise 1 unforgettable stand.
                 </strong>
               </div>
 

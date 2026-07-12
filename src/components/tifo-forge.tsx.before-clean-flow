@@ -55,80 +55,57 @@ function SymbolGlyph({
   color: string;
   outlineColor?: string;
 }) {
-  if (symbol === "crown") {
-    const crownPath =
-      "M12 69 18 28 40 48 50 15 60 48 82 28 88 69Z";
+  const outlineStyle = {
+    paintOrder: "stroke fill" as const,
+    stroke: outlineColor,
+    strokeWidth: 10,
+    strokeLinejoin: "round" as const,
+  };
 
+  if (symbol === "crown") {
     return (
       <g
         fill="none"
+        stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
       >
         <path
-          d={crownPath}
-          stroke={outlineColor}
-          strokeWidth="13"
+          d="M12 69 18 28 40 48 50 15 60 48 82 28 88 69Z"
+          strokeWidth="6"
+          style={outlineStyle}
         />
         <path
-          d={crownPath}
-          stroke={color}
-          strokeWidth="6"
-        />
-        <rect
-          x="14"
-          y="67"
-          width="72"
-          height="20"
-          rx="5"
-          fill={outlineColor}
-        />
-        <rect
-          x="18"
-          y="71"
-          width="64"
-          height="12"
-          rx="3"
+          d="M17 70H83V84H17Z"
           fill={color}
+          strokeWidth="6"
+          style={outlineStyle}
         />
+        <circle cx="18" cy="27" r="4" fill={color} />
+        <circle cx="50" cy="14" r="4" fill={color} />
+        <circle cx="82" cy="27" r="4" fill={color} />
       </g>
     );
   }
 
   if (symbol === "phoenix") {
-    const outer =
-      "M50 12C57 29 67 37 88 24C84 44 72 55 58 53C70 65 65 82 50 92C35 82 30 65 42 53C28 55 16 44 12 24C33 37 43 29 50 12Z";
-
-    const inner =
-      "M50 27C41 41 41 56 50 73C59 56 59 41 50 27Z";
-
     return (
       <g
         fill="none"
+        stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
       >
         <path
-          d={outer}
-          stroke={outlineColor}
-          strokeWidth="14"
-        />
-        <path
-          d={outer}
-          stroke={color}
+          d="M50 12C57 29 67 37 88 24C84 44 72 55 58 53C70 65 65 82 50 92C35 82 30 65 42 53C28 55 16 44 12 24C33 37 43 29 50 12Z"
           strokeWidth="7"
+          style={outlineStyle}
         />
         <path
-          d={inner}
-          fill={outlineColor}
-          stroke={outlineColor}
-          strokeWidth="10"
-        />
-        <path
-          d={inner}
+          d="M50 27C41 41 41 56 50 73C59 56 59 41 50 27Z"
           fill={color}
-          stroke={color}
           strokeWidth="4"
+          style={outlineStyle}
         />
       </g>
     );
@@ -139,10 +116,7 @@ function SymbolGlyph({
       <polygon
         points="58,6 23,55 45,55 35,94 78,42 55,42"
         fill={color}
-        stroke={outlineColor}
-        strokeWidth="10"
-        strokeLinejoin="round"
-        style={{ paintOrder: "stroke fill" }}
+        style={outlineStyle}
       />
     );
   }
@@ -152,10 +126,7 @@ function SymbolGlyph({
       <path
         d="M50 88 16 56C-7 34 8 8 31 13C41 15 48 24 50 32C52 24 59 15 69 13C92 8 107 34 84 56Z"
         fill={color}
-        stroke={outlineColor}
-        strokeWidth="10"
-        strokeLinejoin="round"
-        style={{ paintOrder: "stroke fill" }}
+        style={outlineStyle}
       />
     );
   }
@@ -164,75 +135,60 @@ function SymbolGlyph({
     return (
       <g
         fill="none"
+        stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path
-          d="M18 66A32 32 0 0 1 82 66"
-          stroke={outlineColor}
-          strokeWidth="15"
-        />
-        <path
-          d="M18 66A32 32 0 0 1 82 66"
-          stroke={color}
-          strokeWidth="8"
+        <circle
+          cx="50"
+          cy="55"
+          r="21"
+          fill={color}
+          style={outlineStyle}
         />
 
         <path
-          d="M10 70H90"
-          stroke={outlineColor}
-          strokeWidth="15"
-        />
-        <path
-          d="M10 70H90"
-          stroke={color}
-          strokeWidth="8"
+          d="M50 8V23M18 21L29 33M82 21L71 33M6 55H21M94 55H79M18 86L30 74M82 86L70 74"
+          strokeWidth="7"
+          style={outlineStyle}
         />
 
         <path
-          d="M50 18V30M25 30L34 39M75 30L66 39"
-          stroke={outlineColor}
-          strokeWidth="13"
-        />
-        <path
-          d="M50 18V30M25 30L34 39M75 30L66 39"
-          stroke={color}
-          strokeWidth="6"
+          d="M10 88H90"
+          strokeWidth="8"
+          style={outlineStyle}
         />
       </g>
     );
   }
 
-  const wingPaths = [
-    "M47 72C32 79 18 74 8 62C26 61 35 49 39 30C45 43 48 57 47 72Z",
-    "M53 72C68 79 82 74 92 62C74 61 65 49 61 30C55 43 52 57 53 72Z",
-    "M50 29V86",
-    "M38 82 50 91 62 82",
-  ];
-
   return (
     <g
       fill="none"
+      stroke={color}
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      {wingPaths.map((wingPath) => (
-        <path
-          key={`outline-${wingPath}`}
-          d={wingPath}
-          stroke={outlineColor}
-          strokeWidth="15"
-        />
-      ))}
-
-      {wingPaths.map((wingPath) => (
-        <path
-          key={`color-${wingPath}`}
-          d={wingPath}
-          stroke={color}
-          strokeWidth="7"
-        />
-      ))}
+      <path
+        d="M47 72C32 79 18 74 8 62C26 61 35 49 39 30C45 43 48 57 47 72Z"
+        strokeWidth="7"
+        style={outlineStyle}
+      />
+      <path
+        d="M53 72C68 79 82 74 92 62C74 61 65 49 61 30C55 43 52 57 53 72Z"
+        strokeWidth="7"
+        style={outlineStyle}
+      />
+      <path
+        d="M50 29V86"
+        strokeWidth="7"
+        style={outlineStyle}
+      />
+      <path
+        d="M38 82 50 91 62 82"
+        strokeWidth="7"
+        style={outlineStyle}
+      />
     </g>
   );
 }
@@ -352,21 +308,23 @@ function isSymbolSeat(
   }
 
   if (symbol === "rising-sun") {
+    const circle =
+      x * x + Math.pow(y + 0.05, 2) < 0.2;
+
     const horizon =
-      Math.abs(y - 0.34) < 0.1 &&
-      Math.abs(x) < 0.74;
+      Math.abs(y - 0.45) < 0.09 &&
+      Math.abs(x) < 0.72;
 
-    const sunriseArc =
-      y > -0.05 &&
-      y < 0.36 &&
-      x * x + Math.pow(y - 0.34, 2) < 0.34;
+    const verticalRay =
+      Math.abs(x) < 0.08 &&
+      y > -0.72 &&
+      y < -0.22;
 
-    const openSky =
-      y < 0.14 &&
-      x * x + Math.pow(y - 0.34, 2) > 0.17 &&
-      x * x + Math.pow(y - 0.34, 2) < 0.34;
+    const diagonalRay =
+      Math.abs(Math.abs(x) + y - 0.65) < 0.11 &&
+      y < -0.08;
 
-    return horizon || (sunriseArc && !openSky);
+    return circle || horizon || verticalRay || diagonalRay;
   }
 
   if (symbol === "wings") {
@@ -425,7 +383,7 @@ function darkenHex(hex: string, factor: number) {
     .join("")}`;
 }
 
-function getSupporterBaseColor(
+function getNationalBaseColor(
   team: TeamId,
   row: number,
   column: number,
@@ -433,107 +391,94 @@ function getSupporterBaseColor(
   columns: number,
   palette: Palette,
 ) {
-  const x = column / Math.max(columns - 1, 1);
-  const y = row / Math.max(rows - 1, 1);
+  const normalizedX = column / Math.max(columns - 1, 1);
+  const normalizedY = row / Math.max(rows - 1, 1);
 
-  const centerX =
-    (column - (columns - 1) / 2) / (columns / 2);
-
-  const centerY =
-    (row - (rows - 1) / 2) / (rows / 2);
-
-  /*
-   * These are abstract supporter patterns based only on
-   * contemporary national-team palettes.
-   *
-   * They intentionally avoid reproducing historical,
-   * military, colonial, imperial, or political flags.
-   */
+  const centerX = (column - (columns - 1) / 2) / (columns / 2);
+  const centerY = (row - (rows - 1) / 2) / (rows / 2);
 
   if (team === "argentina") {
-    const verticalRibbon =
-      Math.floor(x * 6) % 2 === 0;
+    const stripe = Math.floor(normalizedX * 5);
 
-    const goldCore =
-      Math.abs(centerX) < 0.1 &&
-      Math.abs(centerY) < 0.3;
-
-    if (goldCore) {
+    if (
+      Math.abs(centerX) < 0.13 &&
+      Math.abs(centerY) < 0.22
+    ) {
       return palette.accent;
     }
 
-    return verticalRibbon
+    return stripe % 2 === 0
       ? palette.primary
       : palette.secondary;
   }
 
   if (team === "brazil") {
-    const centralDiamond =
-      Math.abs(centerX) * 0.95 +
+    const diamond =
+      Math.abs(centerX) * 0.9 +
         Math.abs(centerY) <
-      0.62;
+      0.72;
 
-    const innerCore =
+    const center =
       centerX * centerX +
         centerY * centerY <
-      0.11;
+      0.12;
 
-    if (innerCore) {
+    if (center) {
       return palette.accent;
     }
 
-    return centralDiamond
-      ? palette.primary
-      : palette.secondary;
+    return diamond
+      ? palette.secondary
+      : palette.primary;
   }
 
   if (team === "croatia") {
-    const largeBlock =
-      (Math.floor(column / 4) +
-        Math.floor(row / 3)) %
+    const checker =
+      (Math.floor(column / 2) +
+        Math.floor(row / 2)) %
       2;
 
-    const blueFoundation =
-      y > 0.8;
-
-    if (blueFoundation) {
+    if (
+      normalizedY > 0.82 ||
+      normalizedY < 0.08
+    ) {
       return palette.accent;
     }
 
-    return largeBlock === 0
+    return checker === 0
       ? palette.primary
       : palette.secondary;
   }
 
   if (team === "france") {
-    if (x < 0.32) {
+    if (normalizedX < 0.34) {
       return palette.primary;
     }
 
-    if (x > 0.68) {
-      return palette.accent;
+    if (normalizedX < 0.67) {
+      return palette.secondary;
     }
 
-    return palette.secondary;
+    return palette.accent;
   }
 
   if (team === "japan") {
-    const redCore =
+    const redDisc =
       centerX * centerX +
         centerY * centerY <
-      0.18;
+      0.25;
 
-    const blueFoundation =
-      y > 0.78;
+    const blueFrame =
+      normalizedX < 0.08 ||
+      normalizedX > 0.92 ||
+      normalizedY < 0.08 ||
+      normalizedY > 0.92;
 
-    const blueCrown =
-      y < 0.08;
-
-    if (redCore) {
+    if (redDisc) {
       return palette.accent;
     }
 
-    if (blueFoundation || blueCrown) {
+    if (blueFrame) {
       return palette.primary;
     }
 
@@ -541,63 +486,60 @@ function getSupporterBaseColor(
   }
 
   if (team === "morocco") {
-    const greenChevron =
-      Math.abs(
-        Math.abs(centerX) +
-          centerY * 0.68 -
-          0.42,
-      ) < 0.12;
+    const greenDiamond =
+      Math.abs(centerX) +
+        Math.abs(centerY) <
+      0.72;
 
-    const goldCore =
+    const goldCenter =
       centerX * centerX +
         centerY * centerY <
-      0.07;
+      0.08;
 
-    if (goldCore) {
+    if (goldCenter) {
       return palette.accent;
     }
 
-    return greenChevron
+    return greenDiamond
       ? palette.secondary
       : palette.primary;
   }
 
   if (team === "spain") {
-    const goldCenter =
-      y > 0.27 &&
-      y < 0.73;
+    if (
+      normalizedY < 0.25 ||
+      normalizedY > 0.75
+    ) {
+      return palette.primary;
+    }
 
-    const blueEdge =
-      x < 0.045 ||
-      x > 0.955;
-
-    if (blueEdge) {
+    if (
+      normalizedX < 0.08 ||
+      normalizedX > 0.92
+    ) {
       return palette.accent;
     }
 
-    return goldCenter
-      ? palette.secondary
-      : palette.primary;
+    return palette.secondary;
   }
 
-  const navyCrown =
-    y < 0.25;
+  const stripe = Math.floor(normalizedY * 9);
 
-  const horizontalBand =
-    Math.floor(y * 8) % 2 === 0;
+  const canton =
+    normalizedX < 0.38 &&
+    normalizedY < 0.48;
 
-  if (navyCrown) {
+  if (canton) {
     return palette.primary;
   }
 
-  return horizontalBand
+  return stripe % 2 === 0
     ? palette.accent
     : palette.secondary;
 }
 
 function getSeatColor(
   team: TeamId,
-  emotion: EmotionId,
   layout: TifoDesign["layout"],
   symbol: SymbolId,
   row: number,
@@ -619,6 +561,15 @@ function getSeatColor(
     return symbolColor;
   }
 
+  const baseColor = getNationalBaseColor(
+    team,
+    row,
+    column,
+    rows,
+    columns,
+    palette,
+  );
+
   const centerRow = (rows - 1) / 2;
   const centerColumn = (columns - 1) / 2;
 
@@ -633,146 +584,25 @@ function getSeatColor(
       normalizedY * normalizedY,
   );
 
-  let baseColor = getSupporterBaseColor(
-    team,
-    row,
-    column,
-    rows,
-    columns,
-    palette,
-  );
-
-  /*
-   * Passion overlays are intentionally restrained.
-   * They add direction without destroying the team identity.
-   */
-
-  if (emotion === "believe") {
-    const upwardPath =
-      Math.abs(normalizedX) <
-      0.045 + (normalizedY + 1) * 0.075;
-
-    const liftedShoulders =
-      normalizedY < -0.28 &&
-      Math.abs(normalizedX) <
-        0.2 + Math.abs(normalizedY) * 0.32;
-
-    if (
-      (upwardPath && normalizedY < 0.58) ||
-      liftedShoulders
-    ) {
-      baseColor = palette.accent;
-    }
+  if (centerDistance < 0.29) {
+    return darkenHex(baseColor, 0.3);
   }
 
-  if (emotion === "defy") {
-    const diagonal =
-      normalizedX -
-      normalizedY * 0.72;
-
-    const counterDiagonal =
-      normalizedX +
-      normalizedY * 0.58;
-
-    if (
-      (diagonal > -0.035 &&
-        diagonal < 0.09) ||
-      (
-        counterDiagonal > 0.52 &&
-        counterDiagonal < 0.59
-      )
-    ) {
-      baseColor = palette.accent;
-    }
+  if (centerDistance < 0.43) {
+    return darkenHex(baseColor, 0.58);
   }
-
-  if (emotion === "unite") {
-    const leftConvergence =
-      normalizedX < 0 &&
-      Math.abs(
-        normalizedX +
-          0.42 +
-          normalizedY * 0.24
-      ) < 0.1;
-
-    const rightConvergence =
-      normalizedX > 0 &&
-      Math.abs(
-        normalizedX -
-          0.42 -
-          normalizedY * 0.24
-      ) < 0.1;
-
-    const centerRibbon =
-      Math.abs(normalizedX) <
-      0.055 + Math.abs(normalizedY) * 0.055;
-
-    if (
-      leftConvergence ||
-      rightConvergence ||
-      centerRibbon
-    ) {
-      baseColor = palette.accent;
-    }
-  }
-
-  if (emotion === "remember") {
-    const tributeBand =
-      normalizedY > 0.25 &&
-      normalizedY < 0.4;
-
-    const quietCenter =
-      Math.abs(normalizedX) < 0.045 &&
-      normalizedY > -0.58 &&
-      normalizedY < 0.64;
-
-    if (tributeBand || quietCenter) {
-      baseColor = palette.accent;
-    }
-  }
-
-  /*
-   * Create a soft, controlled clearing around the emblem.
-   * This prevents the center from becoming visually noisy.
-   */
-
-  if (centerDistance < 0.24) {
-    return darkenHex(baseColor, 0.32);
-  }
-
-  if (centerDistance < 0.38) {
-    return darkenHex(baseColor, 0.64);
-  }
-
-  /*
-   * Gemini's layout choice adds only a final accent,
-   * never a second competing pattern.
-   */
 
   if (layout === "diagonal-rise") {
-    const diagonal =
-      normalizedX -
-      normalizedY * 0.75;
+    const diagonal = column - row * 1.55;
 
-    if (
-      diagonal > 0.28 &&
-      diagonal < 0.36
-    ) {
+    if (diagonal > 9 && diagonal < 12) {
       return palette.accent;
     }
   }
 
   if (
     layout === "split-banner" &&
-    Math.abs(normalizedX) < 0.045
-  ) {
-    return palette.accent;
-  }
-
-  if (
-    layout === "radiating-burst" &&
-    centerDistance > 0.52 &&
-    centerDistance < 0.6
+    Math.abs(column - centerColumn) < 1.2
   ) {
     return palette.accent;
   }
@@ -889,36 +719,17 @@ function StadiumPreview({
         (_, index) => {
           const row = Math.floor(index / columns);
           const column = index % columns;
-          const rowProgress =
-            row / Math.max(rows - 1, 1);
-
-          const rowWidth = 820 + row * 19;
+          const rowWidth = 850 + row * 14;
           const gap = rowWidth / columns;
           const startX = 600 - rowWidth / 2;
-
-          const normalizedColumn =
-            (column - (columns - 1) / 2) /
-            ((columns - 1) / 2);
-
-          const rowCurve =
-            Math.pow(Math.abs(normalizedColumn), 1.7) *
-            (8 + rowProgress * 10);
-
-          const perspectiveDrop =
-            rowProgress * rowProgress * 13;
 
           return {
             index,
             row,
             column,
             x: startX + column * gap + 3,
-            y:
-              170 +
-              row * 27 +
-              rowCurve +
-              perspectiveDrop,
-            width: Math.max(18, gap - 6),
-            height: 16 + rowProgress * 3,
+            y: 176 + row * 28,
+            width: Math.max(19, gap - 6),
           };
         },
       ),
@@ -1167,34 +978,6 @@ function StadiumPreview({
           strokeWidth="3"
         />
 
-        <motion.rect
-          x="82"
-          y="167"
-          width="518"
-          height="411"
-          fill="#020617"
-          initial={{ x: 0 }}
-          animate={{ x: -535 }}
-          transition={{
-            duration: revealDuration * 0.78,
-            ease: [0.76, 0, 0.24, 1],
-          }}
-        />
-
-        <motion.rect
-          x="600"
-          y="167"
-          width="518"
-          height="411"
-          fill="#020617"
-          initial={{ x: 0 }}
-          animate={{ x: 535 }}
-          transition={{
-            duration: revealDuration * 0.78,
-            ease: [0.76, 0, 0.24, 1],
-          }}
-        />
-
         <motion.g
           initial={passionMotion.initial}
           animate={passionMotion.animate}
@@ -1217,18 +1000,16 @@ function StadiumPreview({
               x,
               y,
               width,
-              height,
             }) => (
               <rect
                 key={index}
                 x={x}
                 y={y}
                 width={width}
-                height={height}
+                height="18"
                 rx="3"
                 fill={getSeatColor(
                   team,
-                  emotion,
                   design.layout,
                   symbol,
                   row,
@@ -1272,7 +1053,7 @@ function StadiumPreview({
         <motion.circle
           cx="600"
           cy="350"
-          r="108"
+          r="132"
           fill={symbolColor}
           filter={`url(#glow-${generationId})`}
           initial={{
@@ -1298,7 +1079,7 @@ function StadiumPreview({
           }}
         />
 
-        <g transform="translate(514 262) scale(1.72)">
+        <g transform="translate(495 243) scale(2.1)">
           <motion.g
             initial={{
               opacity: 0,
@@ -1327,89 +1108,6 @@ function StadiumPreview({
             />
           </motion.g>
         </g>
-
-        <motion.g
-          className={styles.supporterLayer}
-          initial={{
-            opacity: 0,
-            y: 18,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            delay: symbolDelay + 0.16,
-            duration: 0.75,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-        >
-          {Array.from({ length: 42 }, (_, index) => {
-            const x = 122 + index * 23.4;
-            const raised = index % 5 === 0;
-            const stagger = index % 3;
-
-            return (
-              <motion.g
-                key={index}
-                animate={{
-                  y:
-                    emotion === "unite"
-                      ? [0, -2, 0]
-                      : emotion === "defy"
-                        ? [0, -3, 0]
-                        : [0, -1.5, 0],
-                }}
-                transition={{
-                  delay:
-                    finalPulseDelay +
-                    stagger * 0.08,
-                  duration:
-                    emotion === "remember"
-                      ? 2.8
-                      : 2.1,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                <circle
-                  cx={x}
-                  cy="507"
-                  r={raised ? 5.2 : 4.4}
-                  fill="#020617"
-                  opacity="0.9"
-                />
-
-                <path
-                  d={
-                    raised
-                      ? `M${x - 4} 513L${x - 8} 533H${x + 8}L${x + 4} 513Z`
-                      : `M${x - 4} 513L${x - 6} 533H${x + 6}L${x + 4} 513Z`
-                  }
-                  fill="#020617"
-                  opacity="0.92"
-                />
-
-                {raised && (
-                  <>
-                    <path
-                      d={`M${x - 3} 518L${x - 10} 500`}
-                      stroke="#020617"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d={`M${x + 3} 518L${x + 10} 500`}
-                      stroke="#020617"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                    />
-                  </>
-                )}
-              </motion.g>
-            );
-          })}
-        </motion.g>
 
         <motion.g
           initial={{
@@ -1540,31 +1238,6 @@ function StadiumPreview({
           strokeWidth="3"
         />
 
-        <motion.ellipse
-          cx="600"
-          cy="684"
-          rx="410"
-          ry="48"
-          fill={teamData.colors.primary}
-          initial={{
-            opacity: 0,
-            scaleX: 0.25,
-          }}
-          animate={{
-            opacity: [0, 0.16, 0.06],
-            scaleX: [0.25, 1.04, 1],
-          }}
-          transition={{
-            delay: sloganDelay + 0.12,
-            duration: 1.35,
-            times: [0, 0.68, 1],
-            ease: [0.16, 1, 0.3, 1],
-          }}
-          style={{
-            transformOrigin: "600px 684px",
-          }}
-        />
-
         <ellipse
           cx="600"
           cy="682"
@@ -1575,7 +1248,6 @@ function StadiumPreview({
           strokeOpacity="0.42"
           strokeWidth="3"
         />
-
 
         <motion.g
           initial={{ opacity: 0 }}
@@ -1607,18 +1279,6 @@ function StadiumPreview({
           >
             {teamData.code} · CROWD INTENSITY{" "}
             {design.energy}
-          </text>
-
-          <text
-            x="600"
-            y="628"
-            textAnchor="middle"
-            fill="#94a3b8"
-            fontSize="13"
-            fontWeight="700"
-            letterSpacing="2"
-          >
-            DIRECTED BY GEMINI · RENDERED PROCEDURALLY
           </text>
         </motion.g>
       </motion.svg>
@@ -1661,15 +1321,6 @@ export default function TifoForge() {
   const [selectedSymbol, setSelectedSymbol] =
     useState<SymbolId>("phoenix");
 
-  const [hasChosenTeam, setHasChosenTeam] =
-    useState(false);
-
-  const [hasChosenEmotion, setHasChosenEmotion] =
-    useState(false);
-
-  const [hasChosenSymbol, setHasChosenSymbol] =
-    useState(false);
-
   const [design, setDesign] =
     useState<TifoDesign>(fallbackTifoDesign);
 
@@ -1687,6 +1338,9 @@ export default function TifoForge() {
   const [statusMessage, setStatusMessage] =
     useState("Ready to raise the stand.");
 
+  const [isStoryExpanded, setIsStoryExpanded] =
+    useState(false);
+
   const selectionTeaser = getSelectionTeaser(
     selectedTeam,
     selectedEmotion,
@@ -1697,26 +1351,6 @@ export default function TifoForge() {
     teams[selectedTeam].recommendedSymbols.includes(
       selectedSymbol,
     );
-
-  const selectionCount =
-    Number(hasChosenTeam) +
-    Number(hasChosenEmotion) +
-    Number(hasChosenSymbol);
-
-  const isSelectionComplete =
-    hasChosenTeam &&
-    hasChosenEmotion &&
-    hasChosenSymbol;
-
-  function resetSelection() {
-    setHasChosenTeam(false);
-    setHasChosenEmotion(false);
-    setHasChosenSymbol(false);
-    setSource(null);
-    setStatusMessage(
-      "Choose a team, a passion, and a symbol.",
-    );
-  }
 
   async function requestTifo(
     selection: TifoSelection,
@@ -1769,13 +1403,6 @@ export default function TifoForge() {
   }
 
   async function generateTifo() {
-    if (!isSelectionComplete) {
-      setStatusMessage(
-        "Complete all three selections before raising the tifo.",
-      );
-      return;
-    }
-
     await requestTifo({
       team: selectedTeam,
       emotion: selectedEmotion,
@@ -1804,9 +1431,6 @@ export default function TifoForge() {
     setSelectedTeam(nextTeam);
     setSelectedEmotion(nextEmotion);
     setSelectedSymbol(nextSymbol);
-    setHasChosenTeam(true);
-    setHasChosenEmotion(true);
-    setHasChosenSymbol(true);
 
     await requestTifo({
       team: nextTeam,
@@ -1903,36 +1527,25 @@ export default function TifoForge() {
                 1 · Team
               </div>
 
-              <div
-                className={styles.teamGrid}
-                role="group"
-                aria-label="Choose a national team"
-              >
+              <div className={styles.teamGrid}>
                 {teamIds.map((teamId) => {
                   const team = teams[teamId];
 
                   const active =
-                    hasChosenTeam &&
                     selectedTeam === teamId;
 
                   return (
                     <button
                       key={teamId}
                       type="button"
-                      aria-pressed={active}
-                      aria-label={`Choose ${team.name}`}
                       className={
                         active
                           ? styles.teamActive
                           : styles.teamButton
                       }
-                      onClick={() => {
-                        setSelectedTeam(teamId);
-                        setHasChosenTeam(true);
-                        setStatusMessage(
-                          "Team selected. Choose the passion.",
-                        );
-                      }}
+                      onClick={() =>
+                        setSelectedTeam(teamId)
+                      }
                     >
                       <span>{team.flag}</span>
                       <strong>{team.code}</strong>
@@ -1947,33 +1560,19 @@ export default function TifoForge() {
                 2 · Passion
               </div>
 
-              <div
-                className={styles.passionGrid}
-                role="group"
-                aria-label="Choose a supporter passion"
-              >
+              <div className={styles.passionGrid}>
                 {emotionIds.map((emotionId) => (
                   <button
                     key={emotionId}
                     type="button"
-                    aria-pressed={
-                      hasChosenEmotion &&
-                      selectedEmotion === emotionId
-                    }
-                    aria-label={`Choose ${emotions[emotionId].label}`}
                     className={
-                      hasChosenEmotion &&
                       selectedEmotion === emotionId
                         ? styles.choiceActive
                         : styles.choiceButton
                     }
-                    onClick={() => {
-                      setSelectedEmotion(emotionId);
-                      setHasChosenEmotion(true);
-                      setStatusMessage(
-                        "Passion selected. Choose the symbol.",
-                      );
-                    }}
+                    onClick={() =>
+                      setSelectedEmotion(emotionId)
+                    }
                   >
                     {emotions[emotionId].label}
                   </button>
@@ -1986,40 +1585,28 @@ export default function TifoForge() {
                 3 · Symbol
               </div>
 
-              <div
-                className={styles.symbolGrid}
-                role="group"
-                aria-label="Choose a visual symbol"
-              >
+              <div className={styles.symbolGrid}>
                 {symbolIds.map((symbolId) => (
                   <button
                     key={symbolId}
                     type="button"
                     title={symbols[symbolId].label}
-                    aria-label={`Choose ${symbols[symbolId].label}`}
-                    aria-pressed={
-                      hasChosenSymbol &&
-                      selectedSymbol === symbolId
+                    aria-label={
+                      symbols[symbolId].label
                     }
                     className={
-                      hasChosenSymbol &&
                       selectedSymbol === symbolId
                         ? styles.symbolActive
                         : styles.symbolButton
                     }
-                    onClick={() => {
-                      setSelectedSymbol(symbolId);
-                      setHasChosenSymbol(true);
-                      setStatusMessage(
-                        "All choices ready. Raise the tifo.",
-                      );
-                    }}
+                    onClick={() =>
+                      setSelectedSymbol(symbolId)
+                    }
                   >
                     <svg viewBox="0 0 100 100">
                       <SymbolGlyph
                         symbol={symbolId}
                         color="currentColor"
-                        outlineColor="transparent"
                       />
                     </svg>
 
@@ -2037,44 +1624,13 @@ export default function TifoForge() {
               </div>
             </section>
 
-            <div className={styles.briefingHeader}>
-              <div>
-                <span>Build your display</span>
-                <strong>
-                  Three choices. One unforgettable stand.
-                </strong>
-              </div>
-
-              <button
-                type="button"
-                className={styles.resetButton}
-                onClick={resetSelection}
-                disabled={selectionCount === 0}
-              >
-                Reset
-              </button>
-            </div>
-
-            <div className={styles.progressTrack}>
-              <motion.div
-                animate={{
-                  width: `${(selectionCount / 3) * 100}%`,
-                }}
-                transition={{
-                  type: "spring",
-                  stiffness: 190,
-                  damping: 24,
-                }}
-              />
-            </div>
-
             <AnimatePresence mode="wait">
               <motion.div
-                key={`${selectionCount}-${selectedTeam}-${selectedEmotion}-${selectedSymbol}`}
+                key={`${selectedTeam}-${selectedEmotion}-${selectedSymbol}`}
                 className={styles.selectionPreview}
                 initial={{
                   opacity: 0,
-                  y: 8,
+                  y: 9,
                   scale: 0.985,
                 }}
                 animate={{
@@ -2084,145 +1640,162 @@ export default function TifoForge() {
                 }}
                 exit={{
                   opacity: 0,
-                  y: -6,
+                  y: -7,
+                  scale: 0.99,
                 }}
                 transition={{
-                  duration: 0.26,
+                  duration: 0.32,
                   ease: [0.16, 1, 0.3, 1],
                 }}
               >
-                {selectionCount === 0 ? (
-                  <div className={styles.emptyBriefing}>
-                    <span>01</span>
-                    <p>
-                      Begin with the country whose supporters
-                      will raise the stand.
-                    </p>
+                <div className={styles.previewTopLine}>
+                  <span>{selectionTeaser.kicker}</span>
+
+                  <div className={styles.previewRight}>
+                    {selectedSymbolIsRecommended && (
+                      <span className={styles.fitChip}>
+                        Recommended
+                      </span>
+                    )}
+
+                    <div
+                      className={styles.palettePreview}
+                      aria-label={`${teams[selectedTeam].name} color palette`}
+                    >
+                      <motion.i
+                        key={`${selectedTeam}-primary`}
+                        initial={{ scaleX: 0.4, opacity: 0 }}
+                        animate={{ scaleX: 1, opacity: 1 }}
+                        style={{
+                          background:
+                            teams[selectedTeam].colors.primary,
+                        }}
+                      />
+
+                      <motion.i
+                        key={`${selectedTeam}-secondary`}
+                        initial={{ scaleX: 0.4, opacity: 0 }}
+                        animate={{ scaleX: 1, opacity: 1 }}
+                        transition={{ delay: 0.05 }}
+                        style={{
+                          background:
+                            teams[selectedTeam].colors.secondary,
+                        }}
+                      />
+
+                      <motion.i
+                        key={`${selectedTeam}-accent`}
+                        initial={{ scaleX: 0.4, opacity: 0 }}
+                        animate={{ scaleX: 1, opacity: 1 }}
+                        transition={{ delay: 0.1 }}
+                        style={{
+                          background:
+                            teams[selectedTeam].colors.accent,
+                        }}
+                      />
+                    </div>
                   </div>
-                ) : (
-                  <>
-                    <div className={styles.previewTopLine}>
-                      <span>
-                        {hasChosenTeam
-                          ? teams[selectedTeam].code
-                          : "TEAM"}
-                        {" · "}
-                        {hasChosenEmotion
-                          ? emotions[selectedEmotion].label
-                          : "PASSION"}
-                        {" · "}
-                        {hasChosenSymbol
-                          ? symbols[selectedSymbol].label
-                          : "SYMBOL"}
-                      </span>
+                </div>
 
-                      <div className={styles.previewRight}>
-                        {hasChosenSymbol &&
-                          selectedSymbolIsRecommended && (
-                            <span className={styles.fitChip}>
-                              Strong fit
-                            </span>
-                          )}
+                <strong className={styles.previewTitle}>
+                  {selectionTeaser.title}
+                </strong>
 
-                        {hasChosenTeam && (
-                          <div
-                            className={styles.palettePreview}
-                            aria-label={`${teams[selectedTeam].name} palette`}
-                          >
-                            <i
-                              style={{
-                                background:
-                                  teams[selectedTeam].colors.primary,
-                              }}
-                            />
-                            <i
-                              style={{
-                                background:
-                                  teams[selectedTeam].colors.secondary,
-                              }}
-                            />
-                            <i
-                              style={{
-                                background:
-                                  teams[selectedTeam].colors.accent,
-                              }}
-                            />
-                          </div>
-                        )}
+                <div className={styles.selectionFormula}>
+                  <span>
+                    {teams[selectedTeam].flag}
+                    {teams[selectedTeam].code}
+                  </span>
+
+                  <b>+</b>
+
+                  <span>{emotions[selectedEmotion].label}</span>
+
+                  <b>+</b>
+
+                  <span>{symbols[selectedSymbol].label}</span>
+
+                  <b>→</b>
+
+                  <em>Hidden chant</em>
+                </div>
+
+                <p className={styles.previewSummary}>
+                  {selectionTeaser.body}
+                </p>
+
+                <AnimatePresence initial={false}>
+                  {isStoryExpanded && (
+                    <motion.div
+                      className={styles.storyDetails}
+                      initial={{
+                        opacity: 0,
+                        height: 0,
+                        y: -5,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        height: "auto",
+                        y: 0,
+                      }}
+                      exit={{
+                        opacity: 0,
+                        height: 0,
+                        y: -5,
+                      }}
+                      transition={{
+                        duration: 0.28,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
+                    >
+                      <div>
+                        <span>Team identity</span>
+                        <p>
+                          {teams[selectedTeam].identityLine}
+                        </p>
                       </div>
-                    </div>
 
-                    <strong className={styles.previewTitle}>
-                      {!hasChosenEmotion
-                        ? "Now choose the feeling."
-                        : !hasChosenSymbol
-                          ? emotions[selectedEmotion].teaser
-                          : selectionTeaser.title}
-                    </strong>
+                      <div>
+                        <span>Passion</span>
+                        <p>
+                          {emotions[selectedEmotion].description}
+                        </p>
+                      </div>
 
-                    <div className={styles.selectionFormula}>
-                      <span
-                        className={
-                          hasChosenTeam
-                            ? styles.formulaComplete
-                            : styles.formulaPending
-                        }
-                      >
-                        {hasChosenTeam
-                          ? `${teams[selectedTeam].flag} ${teams[selectedTeam].code}`
-                          : "Team"}
-                      </span>
+                      <div>
+                        <span>Symbol meaning</span>
+                        <p>
+                          {symbols[selectedSymbol].description}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
-                      <b>+</b>
+                <div className={styles.previewFooter}>
+                  <span>Final chant sealed until reveal</span>
 
-                      <span
-                        className={
-                          hasChosenEmotion
-                            ? styles.formulaComplete
-                            : styles.formulaPending
-                        }
-                      >
-                        {hasChosenEmotion
-                          ? emotions[selectedEmotion].label
-                          : "Passion"}
-                      </span>
-
-                      <b>+</b>
-
-                      <span
-                        className={
-                          hasChosenSymbol
-                            ? styles.formulaComplete
-                            : styles.formulaPending
-                        }
-                      >
-                        {hasChosenSymbol
-                          ? symbols[selectedSymbol].label
-                          : "Symbol"}
-                      </span>
-
-                      <b>→</b>
-
-                      <em>
-                        {isSelectionComplete
-                          ? "Hidden chant"
-                          : `${selectionCount}/3 ready`}
-                      </em>
-                    </div>
-
-                    <p className={styles.previewSummary}>
-                      {!hasChosenTeam
-                        ? "Choose a team to unlock its national palette."
-                        : !hasChosenEmotion
-                          ? teams[selectedTeam].identityLine
-                          : !hasChosenSymbol
-                            ? emotions[selectedEmotion].description
-                            : `${teams[selectedTeam].identityLine} The ${symbols[
-                                selectedSymbol
-                              ].label.toLowerCase()} shapes the final reveal.`}
-                    </p>
-                  </>
-                )}
+                  <button
+                    type="button"
+                    className={styles.storyToggle}
+                    onClick={() =>
+                      setIsStoryExpanded((current) => !current)
+                    }
+                    aria-expanded={isStoryExpanded}
+                  >
+                    {isStoryExpanded
+                      ? "Show less"
+                      : "Why this works"}
+                    <motion.span
+                      animate={{
+                        rotate: isStoryExpanded ? 180 : 0,
+                      }}
+                      transition={{ duration: 0.22 }}
+                    >
+                      ↓
+                    </motion.span>
+                  </button>
+                </div>
               </motion.div>
             </AnimatePresence>
 
@@ -2230,15 +1803,11 @@ export default function TifoForge() {
               type="button"
               className={styles.raiseButton}
               onClick={generateTifo}
-              disabled={
-                isGenerating || !isSelectionComplete
-              }
+              disabled={isGenerating}
             >
               {isGenerating
                 ? "Directing..."
-                : isSelectionComplete
-                  ? "Raise the tifo"
-                  : `Select ${3 - selectionCount} more`}
+                : "Raise the tifo"}
             </button>
 
             <button
