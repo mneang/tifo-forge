@@ -1725,35 +1725,11 @@ export default function TifoForge() {
   ) {
     setIsGenerating(true);
 
-    const browserCacheKey =
-      `tifo-forge:${selection.team}:${selection.emotion}:${selection.symbol}`;
-
     setStatusMessage(
       "Gemini is directing the stadium display.",
     );
 
     try {
-      const cachedText =
-        window.localStorage.getItem(browserCacheKey);
-
-      if (cachedText) {
-        const cachedResult =
-          JSON.parse(cachedText) as DesignResponse;
-
-        if (cachedResult.ok && cachedResult.design) {
-          setDesign(cachedResult.design);
-          setSource(cachedResult.source);
-          setGenerationId(
-            (current) => current + 1,
-          );
-
-          setStatusMessage(
-            "Your saved creative plan has been raised instantly.",
-          );
-
-          return;
-        }
-      }
       const response = await fetch("/api/design", {
         method: "POST",
         headers: {
@@ -1775,11 +1751,6 @@ export default function TifoForge() {
       setDesign(result.design);
       setSource(result.source);
       setGenerationId((current) => current + 1);
-
-      window.localStorage.setItem(
-        browserCacheKey,
-        JSON.stringify(result),
-      );
 
       setStatusMessage(
         result.source === "gemini"

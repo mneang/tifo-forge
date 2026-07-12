@@ -11,63 +11,6 @@ import { emotions, symbols, teams } from "@/lib/tifo-options";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-type CachedDesignResponse = {
-  ok: true;
-  source: "gemini" | "fallback";
-  design: {
-    slogan: string;
-    layout:
-      | "center-emblem"
-      | "diagonal-rise"
-      | "split-banner"
-      | "radiating-burst";
-    animation:
-      | "row-wave"
-      | "center-out"
-      | "diagonal-sweep"
-      | "stadium-pulse";
-    energy: number;
-    designReason: string;
-  };
-  attempts?: number;
-  warning?: string;
-};
-
-const designCache = new Map<
-  string,
-  {
-    expiresAt: number;
-    response: CachedDesignResponse;
-  }
->();
-
-const CACHE_TTL_MS = 30 * 60 * 1000;
-
-function getCachedDesign(key: string) {
-  const cached = designCache.get(key);
-
-  if (!cached) {
-    return null;
-  }
-
-  if (cached.expiresAt < Date.now()) {
-    designCache.delete(key);
-    return null;
-  }
-
-  return cached.response;
-}
-
-function setCachedDesign(
-  key: string,
-  response: CachedDesignResponse,
-) {
-  designCache.set(key, {
-    expiresAt: Date.now() + CACHE_TTL_MS,
-    response,
-  });
-}
-
 const tifoDesignJsonSchema = {
   type: "object",
   additionalProperties: false,
@@ -319,33 +262,13 @@ function shouldRetryGemini(error: unknown) {
 }
 
 function simplifyDesignReason(value: string) {
-  const cleaned = value
-    .replace(/\bmanifest(?:s|ed|ing)?\b/gi, "expresses")
+  return value
+    .replace(/\bmanifest(?:s|ed|ing)?\b/gi, "express")
     .replace(/\bvisually\b/gi, "")
     .replace(/\bpowerful\b/gi, "bold")
     .replace(/\bcollective declaration\b/gi, "shared roar")
     .replace(/\s+/g, " ")
     .trim();
-
-  const firstSentenceMatch = cleaned.match(
-    /^(.+?[.!?])(?:\s|$)/,
-  );
-
-  const sentence =
-    firstSentenceMatch?.[1] ?? cleaned;
-
-  if (sentence.length <= 170) {
-    return /[.!?]$/.test(sentence)
-      ? sentence
-      : `${sentence}.`;
-  }
-
-  const shortened = sentence
-    .slice(0, 167)
-    .replace(/\s+\S*$/, "")
-    .replace(/[,:;\s]+$/, "");
-
-  return `${shortened}.`;
 }
 
 export async function POST(request: Request) {
@@ -376,19 +299,6 @@ export async function POST(request: Request) {
   }
 
   const selection = requestResult.data;
-
-  const cacheKey =
-    `${selection.team}:${selection.emotion}:${selection.symbol}`;
-
-  const cachedResponse = getCachedDesign(cacheKey);
-
-  if (cachedResponse) {
-    return NextResponse.json({
-      ...cachedResponse,
-      cached: true,
-    });
-  }
-
   const fallbackDesign = buildFallbackTifoDesign(selection);
 
   const team = teams[selection.team];
@@ -397,20 +307,16 @@ export async function POST(request: Request) {
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    const response: CachedDesignResponse = {
+    return NextResponse.json({
       ok: true,
       source: "fallback",
       design: fallbackDesign,
       warning: "Gemini API key is unavailable.",
-    };
-
-    setCachedDesign(cacheKey, response);
-
-    return NextResponse.json(response);
+    });
   }
 
   const ai = new GoogleGenAI({ apiKey });
-  const maximumAttempts = 1;
+  const maximumAttempts = 2;
   let lastError: unknown = null;
 
   for (
@@ -460,7 +366,7 @@ export async function POST(request: Request) {
           normalizedDesign,
         );
 
-      const response: CachedDesignResponse = {
+      return NextResponse.json({
         ok: true,
         source: "gemini",
         design: {
@@ -470,11 +376,7 @@ export async function POST(request: Request) {
           ),
         },
         attempts: attempt,
-      };
-
-      setCachedDesign(cacheKey, response);
-
-      return NextResponse.json(response);
+      });
     } catch (error) {
       lastError = error;
 
@@ -491,7 +393,16 @@ export async function POST(request: Request) {
         break;
       }
 
+      const delay =
+        getErrorStatus(error) === 429
+          ? getRetryDelayMilliseconds(error)
+          : 1400;
 
+      console.warn(
+        `Waiting ${delay}ms before retrying Gemini.`,
+      );
+
+      await sleep(delay);
     }
   }
 
@@ -500,16 +411,12 @@ export async function POST(request: Request) {
     lastError,
   );
 
-  const fallbackResponse: CachedDesignResponse = {
+  return NextResponse.json({
     ok: true,
     source: "fallback",
     design: fallbackDesign,
     warning:
-      "The live Gemini request reached its temporary quota, so the resilient local plan was used.",
+      "Gemini was temporarily unavailable after two attempts, so the local creative plan was used.",
     attempts: maximumAttempts,
-  };
-
-  setCachedDesign(cacheKey, fallbackResponse);
-
-  return NextResponse.json(fallbackResponse);
+  });
 }
