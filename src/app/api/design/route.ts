@@ -88,11 +88,15 @@ Chosen symbol: ${symbolLabel}
 Symbol meaning: ${symbolDescription}
 
 STRICT CREATIVE RULES
-- Produce a terrace chant, not a sentence or book title.
+- Produce language that a real supporter could proudly raise across an entire stand.
+- Write a terrace declaration, not advertising copy, a sentence, or a book title.
 - Use exactly 2 or 3 uppercase words.
 - Use no more than 18 total characters, including spaces.
 - Do not use the team or country name.
-- Avoid generic phrases such as GO TEAM, WE WILL WIN, or NEVER GIVE UP.
+- Prefer emotional ideas such as belief, pride, courage, unity, memory, rhythm, hope, and resilience.
+- Avoid empty motivational clichés such as GO TEAM, WE WILL WIN, NEVER GIVE UP, CHASE GREATNESS, or DREAM BIG.
+- Avoid awkward poetry, corporate language, exaggerated heroism, or phrases that sound generated.
+- The slogan should feel natural when shouted by thousands of supporters.
 - Avoid stereotypes, political references, religious claims, or historical claims.
 - Never reference or imitate historical, military, colonial, imperial, or political flags, uniforms, insignia, slogans, or symbols.
 - Keep the design celebratory, inclusive, modern, and appropriate for a global football audience.
