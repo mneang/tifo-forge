@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tifo Forge
 
-## Getting Started
+> **What should 50,000 supporters feel together?**
 
-First, run the development server:
+Tifo Forge turns a team, a supporter emotion, and a visual symbol into an animated stadium tifo directed by Google Gemini.
+
+Instead of generating a static image, Gemini creates a structured creative plan—**chant, formation, reveal tempo, and crowd intensity**—which Tifo Forge renders procedurally as a living card mosaic.
+
+**One feeling. One stand. One voice.**
+
+[Launch Tifo Forge](https://tifo-forge.vercel.app/) · [DEV Weekend Challenge: Passion Edition](https://dev.to/challenges/weekend-2026-07-09)
+
+---
+
+## The experience
+
+1. Choose a national team.
+2. Choose what the crowd should feel: **Believe, Defy, Unite, or Remember**.
+3. Choose a symbol.
+4. Raise the tifo.
+
+The stadium darkens, the mosaic forms, the emblem arrives, and a chant emerges across the stand.
+
+Tifo Forge is designed around the emotion before kickoff: thousands of individuals becoming one crowd.
+
+> **Hero example:** Spain · Defy · Lightning → **SHOCK THE WORLD**
+
+<!-- Add your strongest reveal GIF here:
+![Tifo Forge reveal](./public/tifo-forge-reveal.gif)
+-->
+
+## Why it stands out
+
+Most AI creative tools stop at text or a generated image. Tifo Forge uses Gemini as a **creative director**, then turns its decisions into a responsive visual system.
+
+Gemini chooses:
+
+- **Message** — a short, supporter-ready chant
+- **Formation** — the mosaic composition
+- **Tempo** — the reveal animation
+- **Intensity** — the energy of the stadium moment
+
+The browser then renders the result with SVG geometry, national-team-inspired palettes, passion-specific patterns, and accessible motion.
+
+## Google AI integration
+
+The Gemini API returns validated structured output:
+
+```json
+{
+  "slogan": "SHOCK THE WORLD",
+  "layout": "radiating-burst",
+  "animation": "stadium-pulse",
+  "energy": 95,
+  "designReason": "..."
+}
+```
+
+That output directly controls the rendered experience—Gemini is not decorative or used only for copy.
+
+To remain responsive on the Gemini free tier, Tifo Forge caches successful Gemini plans and includes a polished deterministic fallback for temporary quota limits. The interface always labels the engine honestly.
+
+## Built with
+
+- Next.js 16
+- TypeScript
+- React
+- Motion for React
+- Google Gemini API
+- Zod structured-output validation
+- Procedural SVG rendering
+- Vercel
+
+## Run locally
+
+```bash
+git clone https://github.com/mneang/tifo-forge.git
+cd tifo-forge
+npm install
+```
+
+Create `.env.local`:
+
+```bash
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+Start the app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Design principles
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Passion first:** every choice changes the emotional direction.
+- **One-screen clarity:** minimal scrolling and no unnecessary modes.
+- **Inclusive visual language:** modern supporter palettes without historical, military, political, or controversial flag references.
+- **Accessible motion:** reduced-motion support and restrained effects without strobing.
+- **Resilient by design:** Gemini-first generation with transparent fallback behavior.
 
-## Learn More
+## Challenge
 
-To learn more about Next.js, take a look at the following resources:
+Built for the **DEV Weekend Challenge: Passion Edition**, where entries are judged on theme relevance, creativity, technical execution, writing quality, and meaningful use of prize-category technology.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Tifo Forge enters the **Best Use of Google AI** category.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
+MIT
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built solo during the challenge window.
+
+**Directed by Gemini. Rendered procedurally. Raised by the crowd.**
