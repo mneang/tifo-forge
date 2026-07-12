@@ -1601,13 +1601,11 @@ function StadiumPreview({
             y="628"
             textAnchor="end"
             fill="#cbd5e1"
-            fontSize={
-              teamData.name.length > 12 ? 14 : 16
-            }
+            fontSize="18"
             fontWeight="800"
-            letterSpacing="1.5"
+            letterSpacing="2"
           >
-            {teamData.name.toUpperCase()} · INTENSITY{" "}
+            {teamData.code} · CROWD INTENSITY{" "}
             {design.energy}
           </text>
 
