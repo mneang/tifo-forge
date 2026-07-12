@@ -191,11 +191,16 @@ function getErrorStatus(error: unknown) {
   ) {
     const candidate = error as {
       status?: unknown;
+      statusCode?: unknown;
       code?: unknown;
     };
 
     if (typeof candidate.status === "number") {
       return candidate.status;
+    }
+
+    if (typeof candidate.statusCode === "number") {
+      return candidate.statusCode;
     }
 
     if (typeof candidate.code === "number") {
@@ -206,19 +211,54 @@ function getErrorStatus(error: unknown) {
   return null;
 }
 
+function getRetryDelayMilliseconds(error: unknown) {
+  const fallbackDelay = 21000;
+
+  if (
+    typeof error !== "object" ||
+    error === null
+  ) {
+    return fallbackDelay;
+  }
+
+  const candidate = error as {
+    message?: unknown;
+    body?: unknown;
+  };
+
+  const sources = [
+    typeof candidate.message === "string"
+      ? candidate.message
+      : "",
+    typeof candidate.body === "string"
+      ? candidate.body
+      : "",
+  ];
+
+  for (const source of sources) {
+    const match = source.match(
+      /retry in\s+([\d.]+)s/i,
+    );
+
+    if (match) {
+      return Math.ceil(
+        Number.parseFloat(match[1]) * 1000 + 1000,
+      );
+    }
+  }
+
+  return fallbackDelay;
+}
+
 function shouldRetryGemini(error: unknown) {
   const status = getErrorStatus(error);
 
-  if (
-    status === 400 ||
-    status === 401 ||
-    status === 403 ||
-    status === 404
-  ) {
-    return false;
-  }
-
-  return true;
+  return (
+    status === 429 ||
+    status === 500 ||
+    status === 503 ||
+    status === 504
+  );
 }
 
 function simplifyDesignReason(value: string) {
@@ -276,7 +316,7 @@ export async function POST(request: Request) {
   }
 
   const ai = new GoogleGenAI({ apiKey });
-  const maximumAttempts = 3;
+  const maximumAttempts = 2;
   let lastError: unknown = null;
 
   for (
@@ -354,7 +394,13 @@ export async function POST(request: Request) {
       }
 
       const delay =
-        attempt === 1 ? 650 : 1400;
+        getErrorStatus(error) === 429
+          ? getRetryDelayMilliseconds(error)
+          : 1400;
+
+      console.warn(
+        `Waiting ${delay}ms before retrying Gemini.`,
+      );
 
       await sleep(delay);
     }
@@ -370,7 +416,7 @@ export async function POST(request: Request) {
     source: "fallback",
     design: fallbackDesign,
     warning:
-      "Gemini was temporarily unavailable after three attempts, so the local creative plan was used.",
+      "Gemini was temporarily unavailable after two attempts, so the local creative plan was used.",
     attempts: maximumAttempts,
   });
 }
