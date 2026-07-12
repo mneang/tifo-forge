@@ -2173,3 +2173,54 @@
     display: none;
   }
 }
+
+/* =======================================================
+   Production header spacing
+======================================================= */
+
+.appShell {
+  padding-top: 28px;
+  padding-right: 34px;
+  padding-left: 34px;
+}
+
+.header {
+  min-height: 112px;
+  padding: 4px 4px 14px;
+}
+
+.eyebrow {
+  margin-bottom: 9px;
+}
+
+.header h1 {
+  margin: 0;
+  padding-bottom: 5px;
+}
+
+@media (max-height: 850px) and (min-width: 901px) {
+  .appShell {
+    padding-top: 20px;
+  }
+
+  .header {
+    min-height: 94px;
+  }
+}
+
+@media (max-width: 900px) {
+  .appShell {
+    padding: 20px;
+  }
+
+  .header {
+    min-height: 90px;
+    padding-bottom: 10px;
+  }
+}
+
+@media (max-width: 520px) {
+  .appShell {
+    padding: 16px;
+  }
+}

@@ -108,71 +108,6 @@ STRICT CREATIVE RULES
 `;
 }
 
-
-function normalizeSlogan(value: unknown) {
-  if (typeof value !== "string") {
-    return "ONE VOICE";
-  }
-
-  const cleaned = value
-    .toUpperCase()
-    .replace(/[^A-Z0-9 '&-]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  const words = cleaned
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 3);
-
-  while (
-    words.join(" ").length > 18 &&
-    words.length > 1
-  ) {
-    words.pop();
-  }
-
-  const slogan = words.join(" ");
-
-  return slogan.length >= 2
-    ? slogan.slice(0, 18).trim()
-    : "ONE VOICE";
-}
-
-function normalizeGeminiDesign(
-  value: unknown,
-): unknown {
-  if (
-    typeof value !== "object" ||
-    value === null
-  ) {
-    return value;
-  }
-
-  const design = value as Record<string, unknown>;
-
-  return {
-    ...design,
-    slogan: normalizeSlogan(design.slogan),
-    energy:
-      typeof design.energy === "number"
-        ? Math.round(
-            Math.max(
-              60,
-              Math.min(100, design.energy),
-            ),
-          )
-        : 85,
-    designReason:
-      typeof design.designReason === "string"
-        ? design.designReason
-            .replace(/\s+/g, " ")
-            .trim()
-            .slice(0, 180)
-        : "A focused stadium composition transforms supporter passion into one collective statement.",
-  };
-}
-
 export async function POST(request: Request) {
   let body: unknown;
 
@@ -249,16 +184,17 @@ export async function POST(request: Request) {
       interaction.output_text,
     );
 
-    const normalizedDesign =
-      normalizeGeminiDesign(generatedDesign);
-
     const validatedDesign =
-      tifoDesignSchema.parse(normalizedDesign);
+      tifoDesignSchema.parse(generatedDesign);
 
     return NextResponse.json({
       ok: true,
       source: "gemini",
-      design: validatedDesign,
+      design: {
+        ...validatedDesign,
+        slogan: validatedDesign.slogan.trim().toUpperCase(),
+        designReason: validatedDesign.designReason.trim(),
+      },
     });
   } catch (error) {
     console.error("Tifo design generation failed:", error);
