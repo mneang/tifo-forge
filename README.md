@@ -25,8 +25,7 @@ Tifo Forge is designed around the emotion before kickoff: thousands of individua
 
 > **Hero example:** Spain · Defy · Lightning → **SHOCK THE WORLD**
 
-<!-- Add your strongest reveal GIF here:
-![Tifo Forge reveal](./public/tifo-forge-reveal.gif)
+<img width="1280" height="720" alt="Adobe Express - Tifo Forge" src="https://github.com/user-attachments/assets/64515be5-08af-4855-a8d2-8ba16a69a459" />
 -->
 
 ## Why it stands out
