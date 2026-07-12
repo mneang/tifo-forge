@@ -973,7 +973,7 @@ function StadiumPreview({
             }}
           >
             <span />
-            The stand is ready
+            Gemini is directing the stand
           </motion.div>
         </motion.div>
       )}
@@ -1644,17 +1644,6 @@ function getSelectionTeaser(
   };
 }
 
-function formatDirectionLabel(value: string) {
-  return value
-    .split("-")
-    .map(
-      (word) =>
-        word.charAt(0).toUpperCase() +
-        word.slice(1),
-    )
-    .join(" ");
-}
-
 function randomItem<T>(items: readonly T[]): T {
   return items[
     Math.floor(Math.random() * items.length)
@@ -1740,7 +1729,7 @@ export default function TifoForge() {
       `tifo-forge:${selection.team}:${selection.emotion}:${selection.symbol}`;
 
     setStatusMessage(
-      "The stand is ready. Gemini is setting the message, formation, and tempo.",
+      "Gemini is directing the stadium display.",
     );
 
     try {
@@ -1763,7 +1752,7 @@ export default function TifoForge() {
           );
 
           setStatusMessage(
-            "Your saved Gemini direction rises instantly.",
+            "Your Gemini creative plan has been raised instantly.",
           );
 
           return;
@@ -1804,8 +1793,8 @@ export default function TifoForge() {
 
       setStatusMessage(
         result.source === "gemini"
-          ? "The message is set. The stand rises as one."
-          : "The resilient creative plan kept the stand moving.",
+          ? "Gemini directed the plan. The stand is raised."
+          : "The safe fallback kept the stand alive.",
       );
     } catch (error) {
       console.error(error);
@@ -1943,8 +1932,8 @@ export default function TifoForge() {
           </div>
 
           <p>
-            What should 50,000 supporters
-            feel together?
+            Turn one supporter emotion into a
+            stadium-wide display.
           </p>
         </header>
 
@@ -2337,119 +2326,9 @@ export default function TifoForge() {
                 className={styles.secondaryAction}
                 disabled={isGenerating}
               >
-                Save the stand
+                Download poster
               </button>
             </div>
-
-            <AnimatePresence mode="wait">
-              {source && (
-                <motion.section
-                  key={`${generationId}-direction`}
-                  className={styles.directionDeck}
-                  initial={{
-                    opacity: 0,
-                    y: 12,
-                    scale: 0.99,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                  }}
-                  exit={{
-                    opacity: 0,
-                    y: -8,
-                  }}
-                  transition={{
-                    duration: 0.46,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  aria-label="Creative direction"
-                >
-                  <div className={styles.directionHeader}>
-                    <div>
-                      <span>Gemini creative direction</span>
-                      <strong>
-                        One feeling. One stand. One voice.
-                      </strong>
-                    </div>
-
-                    <div
-                      className={
-                        source === "gemini"
-                          ? styles.liveEngine
-                          : styles.resilientEngine
-                      }
-                    >
-                      <i />
-                      {source === "gemini"
-                        ? "Live Gemini"
-                        : "Resilient plan"}
-                    </div>
-                  </div>
-
-                  <div className={styles.directionGrid}>
-                    <div>
-                      <span>Message</span>
-                      <strong>{design.slogan}</strong>
-                    </div>
-
-                    <div>
-                      <span>Formation</span>
-                      <strong>
-                        {formatDirectionLabel(
-                          design.layout,
-                        )}
-                      </strong>
-                    </div>
-
-                    <div>
-                      <span>Tempo</span>
-                      <strong>
-                        {formatDirectionLabel(
-                          design.animation,
-                        )}
-                      </strong>
-                    </div>
-
-                    <div>
-                      <span>Intensity</span>
-                      <strong>
-                        {design.energy}
-                        <small>/100</small>
-                      </strong>
-                    </div>
-                  </div>
-
-                  <p className={styles.directionReason}>
-                    {design.designReason}
-                  </p>
-
-                  <div className={styles.directionFooter}>
-                    <span>
-                      {teams[selectedTeam].name}
-                    </span>
-
-                    <b>·</b>
-
-                    <span>
-                      {emotions[selectedEmotion].label}
-                    </span>
-
-                    <b>·</b>
-
-                    <span>
-                      {symbols[selectedSymbol].label}
-                    </span>
-
-                    <em>
-                      Directed by Gemini · Rendered
-                      procedurally
-                    </em>
-                  </div>
-                </motion.section>
-              )}
-            </AnimatePresence>
 
             <div className={styles.resultBar}>
               <div>
