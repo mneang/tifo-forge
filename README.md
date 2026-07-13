@@ -25,8 +25,7 @@ Tifo Forge is designed around the emotion before kickoff: thousands of individua
 
 > **Hero example:** Spain · Defy · Lightning → **SHOCK THE WORLD**
 
-<img width="1280" height="720" alt="Adobe Express - Tifo Forge" src="https://github.com/user-attachments/assets/64515be5-08af-4855-a8d2-8ba16a69a459" />
--->
+<img width="1280" height="720" alt="Tifo Forge" src="https://github.com/user-attachments/assets/6b119d73-783b-4b91-92bf-7f3f3f643d08" />
 
 ## Why it stands out
 
